@@ -1,0 +1,10 @@
+.bundle/
+log/*
+tmp/*
+db/*.sqlite3
+coverage/
+spec/tmp/*
+**.orig
+*.*~
+.tddium*
+pkg/
