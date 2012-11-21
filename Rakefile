@@ -23,7 +23,7 @@ end
 
 task :migrate do
   cmd = 'rake -f spec/dummy/Rakefile coursewareable:install:migrations'
-  cmd += ' db:drop db:create db:migrate db:test:prepare'
+  cmd += ' db:create db:migrate db:test:prepare'
 
   system cmd
 end
