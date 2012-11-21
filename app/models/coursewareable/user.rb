@@ -1,5 +1,3 @@
-require 'sorcery'
-
 module Coursewareable
   # Coursewareable User model
   class User < ActiveRecord::Base
@@ -8,11 +6,7 @@ module Coursewareable
     # [User] email validation regex
     EMAIL_FORMAT = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
 
-    begin
-      authenticates_with_sorcery!
-    rescue NameError
-      'Sorcery gem missing.'
-    end
+    authenticates_with_sorcery!
 
     attr_accessible :email, :password, :password_confirmation,
       :first_name, :last_name
