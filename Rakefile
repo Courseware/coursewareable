@@ -28,4 +28,8 @@ task :migrate do
   system cmd
 end
 
-task :default => :dummy_app
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec => :dummy_app) do |t|
+  t.pattern = '../../spec/**/*_spec.rb'
+end
+task :default => :spec

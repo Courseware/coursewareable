@@ -3,3 +3,7 @@
 This is a rails engine carrying most of the Courseware business logic and tests.
 
 This is proprietary software, please consult 'LICENSE' file before using it.
+
+To run tests, use Rake:
+
+  bundle exec rake
