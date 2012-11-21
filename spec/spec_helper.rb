@@ -1,6 +1,5 @@
-require 'bundler/setup'
 require 'spork'
-Bundler.require
+require 'ffaker'
 
 # Use simplecov only if drb server is not running
 unless ENV['DRB']
