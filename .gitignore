@@ -7,4 +7,5 @@ spec/tmp/*
 **.orig
 *.*~
 .tddium*
+spec/dummy
 pkg/

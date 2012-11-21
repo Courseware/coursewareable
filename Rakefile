@@ -4,20 +4,28 @@ begin
 rescue LoadError
   puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
 end
-begin
-  require 'rdoc/task'
-rescue LoadError
-  require 'rdoc/rdoc'
-  require 'rake/rdoctask'
-  RDoc::Task = Rake::RDocTask
-end
-
-RDoc::Task.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'Coursewareable'
-  rdoc.options << '--line-numbers'
-  rdoc.rdoc_files.include('README.rdoc')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
 
 Bundler::GemHelper.install_tasks
+
+desc 'Generates a dummy app for testing'
+task :dummy_app => [:setup, :migrate]
+
+task :setup do
+  require 'rails'
+  require 'coursewareable'
+  require 'coursewareable/generators/dummy_generator'
+
+  sh 'rm -rf spec/dummy'
+  Coursewareable::DummyGenerator.start(
+    %w(. --quiet --force --skip-bundle --old-style-hash --dummy-path=spec/dummy)
+  )
+end
+
+task :migrate do
+  cmd = 'rake -f spec/dummy/Rakefile coursewareable:install:migrations'
+  cmd += ' db:drop db:create db:migrate db:test:prepare'
+
+  system cmd
+end
+
+task :default => :dummy_app
