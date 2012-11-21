@@ -7,7 +7,7 @@ module ::Coursewareable
     # Configure generators
     config.generators do |g|
       g.orm                 :active_record
-      g.test_framework      :rspec, fixture: true
+      g.test_framework      :rspec, :fixture => true
       g.fixture_replacement :fabrication
     end
   end
