@@ -33,3 +33,8 @@ RSpec::Core::RakeTask.new(:spec => :dummy_app) do |t|
   t.pattern = '../../spec/**/*_spec.rb'
 end
 task :default => :spec
+
+namespace :tddium do
+  desc 'Hook to invoke :dummy_app before running tddium'
+  task :pre_hook => :dummy_app
+end
