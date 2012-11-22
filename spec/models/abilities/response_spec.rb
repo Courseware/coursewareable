@@ -37,7 +37,7 @@ describe Coursewareable::User do
           :classroom => response.classroom))
         }
         it{ should_not be_able_to(:destroy, member_response) }
-        it{ should be_able_to(:show, member_response) }
+        it{ should be_able_to(:read, member_response) }
 
         context 'not owning response' do
           let(:user){ Fabricate('coursewareable/user') }

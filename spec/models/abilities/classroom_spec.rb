@@ -11,6 +11,7 @@ describe Coursewareable::User do
       let(:user){ classroom.owner.reload }
 
       context 'members' do
+        it{ should be_able_to(:dashboard, classroom)}
         it{ should be_able_to(:create, Fabricate.build(
           'coursewareable/membership', :classroom => classroom,
           :user => Fabricate('coursewareable/user'))) }
@@ -21,6 +22,7 @@ describe Coursewareable::User do
       context 'collaborators' do
         before{ user.plan.increment!(:allowed_collaborators)}
 
+        it{ should be_able_to(:dashboard, classroom)}
         it{ should be_able_to(:create, Fabricate.build(
           'coursewareable/collaboration', :classroom => classroom,
           :user => Fabricate('coursewareable/user'))) }

@@ -34,7 +34,7 @@ describe Coursewareable::User do
           :classroom => lecture.classroom))
         }
         it{ should_not be_able_to(:manage, lecture) }
-        it{ should be_able_to(:show, lecture) }
+        it{ should be_able_to(:read, lecture) }
         it{ should be_able_to(:index, lecture) }
       end
 

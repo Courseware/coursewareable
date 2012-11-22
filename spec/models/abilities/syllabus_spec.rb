@@ -33,7 +33,7 @@ describe Coursewareable::User do
           :classroom => syllabus.classroom))
         }
         it{ should_not be_able_to(:manage, syllabus) }
-        it{ should be_able_to(:show, syllabus) }
+        it{ should be_able_to(:read, syllabus) }
       end
 
       context 'and a collaborator' do
