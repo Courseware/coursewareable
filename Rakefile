@@ -14,7 +14,7 @@ end
 task :default => :spec
 
 desc 'Generates a dummy app for testing'
-task :dummy_app => [:setup, :migrate]
+task :dummy_app => [:setup, :install_migrations, :migrate]
 
 task :setup do
   require 'rails'
@@ -28,20 +28,29 @@ task :setup do
   )
 end
 
-task :migrate do
+task :install_migrations do
   rakefile = File.expand_path('../spec/dummy/Rakefile', __FILE__)
   sh("rake -f #{rakefile} coursewareable:install:migrations")
+end
+
+task :migrate do
+  rakefile = File.expand_path('../spec/dummy/Rakefile', __FILE__)
   sh("rake -f #{rakefile} db:create db:migrate db:test:prepare")
 end
 
 namespace :tddium do
-  desc 'Hook to setup database on tddium'
-  task :db_hook do
+  desc 'Hook to setup environment on tddium'
+  task :pre_hook do
     tddium_config = File.expand_path('../config/database.yml', __FILE__)
     config = File.expand_path('../spec/dummy/config/database.yml', __FILE__)
 
     Rake::Task[:setup].invoke
     sh "cp #{tddium_config} #{config}"
+    Rake::Task[:install_migrations].invoke
+  end
+
+  desc 'Hook to setup database on tddium'
+  task :db_hook do
     Rake::Task[:migrate].invoke
   end
 end
