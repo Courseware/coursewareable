@@ -4,7 +4,9 @@ require 'ffaker'
 # Use simplecov only if drb server is not running
 unless ENV['DRB']
   require 'simplecov'
-  SimpleCov.start 'rails'
+  SimpleCov.start 'rails' do
+    root File.expand_path('../../', __FILE__)
+  end
 end
 
 Spork.prefork do
