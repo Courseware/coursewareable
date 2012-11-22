@@ -17,22 +17,27 @@ desc 'Generates a dummy app for testing'
 task :dummy_app => [:setup, :migrate]
 
 task :setup do
+  dummy = File.expand_path('../spec/dummy', __FILE__)
+  next if File.exists?(dummy) and ENV['TDDIUM']
+
   require 'rails'
   require 'coursewareable'
   require 'coursewareable/generators/dummy_generator'
 
-  app_path = File.expand_path('../spec/dummy', __FILE__)
-
-  sh "rm -rf #{app_path}"
+  sh "rm -rf #{dummy}"
   Coursewareable::DummyGenerator.start(
-    %W(. --quiet --force --skip-bundle --old-style-hash --dummy-path=#{app_path})
+    %W(. --quiet --force --skip-bundle --old-style-hash --dummy-path=#{dummy})
   )
 end
 
 task :migrate do
+  schema = File.expand_path('../spec/dummy/db/schema.rb', __FILE__)
   rakefile = File.expand_path('../spec/dummy/Rakefile', __FILE__)
 
-  sh("rake -f #{rakefile} coursewareable:install:migrations db:create db:migrate db:test:prepare")
+  next if File.exists?(schema) and ENV['TDDIUM']
+
+  sh("rake -f #{rakefile} coursewareable:install:migrations")
+  sh("rake -f #{rakefile} db:create db:migrate db:test:prepare")
 end
 
 namespace :tddium do
