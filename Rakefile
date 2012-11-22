@@ -37,7 +37,7 @@ end
 
 namespace :tddium do
   desc 'Hook to setup database on tddium'
-  task 'tddium:db_hook' do
+  task :db_hook do
     tddium_config = File.expand_path('../config/database.yml', __FILE__)
     config = File.expand_path('../spec/dummy/config/database.yml', __FILE__)
 
