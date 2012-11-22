@@ -35,18 +35,10 @@ end
 task :default => :spec
 
 namespace :tddium do
-  desc 'Hook to invoke :dummy_app before running tddium'
-  task :pre_hook => :dummy_app
-
   desc 'Hook to setup database on tddium'
   task 'tddium:db_hook' do
-    config =
-"test: &test
-    adapter: <%= ENV['TDDIUM_DB_ADAPTER'] %>
-    database: <%= ENV['TDDIUM_DB_NAME'] %>
-    username: <%= ENV['TDDIUM_DB_USER'] %>
-    password: <%= ENV['TDDIUM_DB_PASSWORD'] %>"
-
-    File.write(File.expand_path('spec/dummy/config/database.yml'), config)
+    Rake::Task[:setup].invoke
+    sh 'cp ../../config/database.yml config/database.yml'
+    Rake::Task[:migrate].invoke
   end
 end
