@@ -7,6 +7,12 @@ end
 
 Bundler::GemHelper.install_tasks
 
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec => :dummy_app) do |t|
+  t.pattern =  File.expand_path('../spec/**/*_spec.rb', __FILE__)
+end
+task :default => :spec
+
 desc 'Generates a dummy app for testing'
 task :dummy_app => [:setup, :migrate]
 
@@ -15,30 +21,28 @@ task :setup do
   require 'coursewareable'
   require 'coursewareable/generators/dummy_generator'
 
-  sh 'rm -rf spec/dummy'
+  app_path = File.expand_path('../spec/dummy', __FILE__)
+
+  sh "rm -rf #{app_path}"
   Coursewareable::DummyGenerator.start(
-    %w(. --quiet --force --skip-bundle --old-style-hash --dummy-path=spec/dummy)
+    %W(. --quiet --force --skip-bundle --old-style-hash --dummy-path=#{app_path})
   )
 end
 
 task :migrate do
-  cmd = 'rake -f spec/dummy/Rakefile coursewareable:install:migrations'
-  cmd += ' db:create db:migrate db:test:prepare'
+  rakefile = File.expand_path('../spec/dummy/Rakefile', __FILE__)
 
-  system cmd
+  sh("rake -f #{rakefile} coursewareable:install:migrations db:create db:migrate db:test:prepare")
 end
-
-require 'rspec/core/rake_task'
-RSpec::Core::RakeTask.new(:spec => :dummy_app) do |t|
-  t.pattern = '../../spec/**/*_spec.rb'
-end
-task :default => :spec
 
 namespace :tddium do
   desc 'Hook to setup database on tddium'
   task 'tddium:db_hook' do
+    tddium_config = File.expand_path('../config/database.yml', __FILE__)
+    config = File.expand_path('../spec/dummy/config/database.yml', __FILE__)
+
     Rake::Task[:setup].invoke
-    sh 'cp ../../config/database.yml config/database.yml'
+    sh "cp #{tddium_config} #{config}"
     Rake::Task[:migrate].invoke
   end
 end
