@@ -4,4 +4,5 @@ require 'paperclip'
 require 'coursewareable/engine'
 
 module ::Coursewareable
+  mattr_accessor :config
 end
