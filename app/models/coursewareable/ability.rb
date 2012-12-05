@@ -66,11 +66,11 @@ module Coursewareable
     def membership_abilities
       # Can create own classroom memberships
       can :create, Coursewareable::Membership do |mem|
-        mem.classroom.owner.equal?(@user)
+        mem.classroom.owner.eql?(@user)
       end
       # Can remove own classroom membership
       can :destroy, Coursewareable::Membership do |mem|
-        mem.user.equal?(@user) or mem.classroom.owner.equal?(@user)
+        mem.user.eql?(@user) or mem.classroom.owner.eql?(@user)
       end
     end
 
@@ -79,12 +79,12 @@ module Coursewareable
       # Can not add a classroom collaborator if limit reached
       if @user.collaborations_count < @user.plan.allowed_collaborators
         can :create, Coursewareable::Collaboration do |col|
-          col.classroom.owner.equal?(@user)
+          col.classroom.owner.eql?(@user)
         end
       end
       # Can remove own classroom collaboration
       can :destroy, Coursewareable::Collaboration do |col|
-        col.user.equal?(@user) or col.classroom.owner.equal?(@user)
+        col.user.eql?(@user) or col.classroom.owner.eql?(@user)
       end
     end
 
@@ -126,7 +126,7 @@ module Coursewareable
       # Can manage lectures if user is the owner or collaborator
       can :manage, Coursewareable::Lecture do |lecture|
         lecture.classroom.collaborators.include?(@user) or
-          lecture.classroom.owner.equal?(@user)
+          lecture.classroom.owner.eql?(@user)
       end
       # Can access lecture if user is a member of the classroom
       can :read, Coursewareable::Lecture do |lecture|
@@ -139,7 +139,7 @@ module Coursewareable
       # Can manage assignment if user is the owner or collaborator
       can :manage, Coursewareable::Assignment do |assignment|
         assignment.classroom.collaborators.include?(@user) or
-          assignment.classroom.owner.equal?(@user)
+          assignment.classroom.owner.eql?(@user)
       end
       # Can access assignment if user is a member of the classroom
       can :read, Coursewareable::Assignment do |assignment|
@@ -152,7 +152,7 @@ module Coursewareable
       # Can manage response if user is the owner or collaborator
       can :destroy, Coursewareable::Response do |resp|
         resp.classroom.collaborators.include?(@user) or
-          resp.classroom.owner.equal?(@user)
+          resp.classroom.owner.eql?(@user)
       end
       # Can create response if user is a classroom member
       can :create, Coursewareable::Response do |resp|
@@ -161,8 +161,8 @@ module Coursewareable
       # Can access response if user is a member of the classroom
       can :read, Coursewareable::Response do |resp|
         resp.classroom.collaborators.include?(@user) or
-          resp.classroom.owner.equal?(@user) or
-          resp.user.equal?(@user)
+          resp.classroom.owner.eql?(@user) or
+          resp.user.eql?(@user)
       end
     end
 
@@ -170,7 +170,7 @@ module Coursewareable
     def grade_abilities
       can :manage, Coursewareable::Grade do |grade|
         grade.classroom.collaborators.include?(@user) or
-          grade.classroom.owner.equal?(@user)
+          grade.classroom.owner.eql?(@user)
       end
     end
   end
