@@ -7,7 +7,7 @@ module Coursewareable
     extend FriendlyId
     include PublicActivity::Model
 
-    attr_accessible :content, :requisite, :title
+    attr_accessible :content, :requisite, :title, :parent_lecture
 
     # Relationships
     belongs_to :parent_lecture, :class_name => Lecture
