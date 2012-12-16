@@ -7,7 +7,7 @@ module Coursewareable
     extend FriendlyId
     include PublicActivity::Model
 
-    attr_accessible :content, :title
+    attr_accessible :content, :title, :quiz
 
     # Serialize quiz values as a hash
     serialize :quiz, JSON
