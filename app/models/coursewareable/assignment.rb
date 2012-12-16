@@ -9,10 +9,8 @@ module Coursewareable
 
     attr_accessible :content, :title
 
-    # Dynamic quiz store
-    store :quiz, :accessors => [:questions, :answers]
-    serialize :questions, Hash
-    serialize :answers, Hash
+    # Serialize quiz values as a hash
+    serialize :quiz, JSON
 
     # Relationships
     belongs_to :lecture

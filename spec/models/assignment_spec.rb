@@ -18,8 +18,7 @@ describe Coursewareable::Assignment do
 
     it { should validate_uniqueness_of(:title).scoped_to(:classroom_id) }
     it { should respond_to(:slug) }
-    it { should respond_to(:questions) }
-    it { should respond_to(:answers) }
+    it { should respond_to(:quiz) }
 
     its(:activities){ should_not be_empty }
 
@@ -55,23 +54,27 @@ describe Coursewareable::Assignment do
     end
   end
 
-  describe 'questions/answers' do
+  describe 'quiz' do
     it 'should properly serialize attributes' do
       assignment = Coursewareable::Assignment.create(
         :title => Faker::Lorem.sentence,
         :content => Faker::HTMLIpsum.body
       )
 
-      assignment.questions = { :first => Faker::Lorem.sentence }
-      assignment.answers = { :first => [Faker::Lorem.word, Faker::Lorem.word] }
+      assignment.quiz = [
+        { :content => Faker::Lorem.sentence, :type => :radios, :options => [
+          { :content => Faker::Lorem.word, :valid => true },
+          { :content => Faker::Lorem.word, :valid => false }
+        ]}
+      ]
 
       assignment.save
       assignment.reload
 
-      assignment.questions.keys.should include(:first)
-      assignment.questions[:first].should_not be_empty
-      assignment.answers.keys.should include(:first)
-      assignment.answers[:first].should_not be_empty
+      assignment.quiz.size.should eq(1)
+      assignment.quiz.first.should_not be_empty
+      assignment.quiz.first['type'].should eq('radios')
+      assignment.quiz.first['options'].first['valid'].should be_true
     end
   end
 end
