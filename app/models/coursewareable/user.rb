@@ -56,5 +56,17 @@ module Coursewareable
       email
     end
 
+    # Class Methods
+    def self.search_by_name_and_email(keyword, attrs = 'id, email', max = 10)
+      keyword = "%#{keyword}%"
+      users = self.arel_table
+
+      return self.where(
+        users[:email].matches(keyword).or(
+          users[:first_name].matches(keyword)).or(
+            users[:last_name].matches(keyword))
+      ).select(attrs).limit(max)
+    end
+
   end
 end

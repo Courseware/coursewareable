@@ -48,4 +48,30 @@ describe Coursewareable::User do
     its(:role) { should eq(:admin) }
   end
 
+  describe '#search_by_name_and_email' do
+    let!(:user) { Fabricate('coursewareable/user') }
+
+    it 'finds the relevant user' do
+      results = Coursewareable::User.search_by_name_and_email(
+        user.first_name[1..3])
+      results.size.should eq(1)
+      results.should include(user)
+      results.first[:first_name].should be_nil
+    end
+
+    it 'returns the relevant user with custom columns included' do
+      results = Coursewareable::User.search_by_name_and_email(
+        user.first_name[1..3], 'id, email, first_name, last_name')
+      results.first[:id].should eq(user.id)
+      results.first[:email].should eq(user.email)
+      results.first[:first_name].should eq(user.first_name)
+      results.first[:last_name].should eq(user.last_name)
+    end
+
+    it 'should not find any user' do
+      results = Coursewareable::User.search_by_name_and_email( 'XXX' )
+      results.size.should eq(0)
+    end
+  end
+
 end
