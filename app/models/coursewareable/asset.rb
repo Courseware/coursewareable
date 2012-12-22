@@ -12,9 +12,6 @@ module Coursewareable
     # Validations
     validates_presence_of :user, :classroom, :assetable
     validates_attachment_presence :attachment
-    validates_attachment_size :attachment, :less_than => Proc.new{ |file|
-      file.user.plan.left_space
-    }
 
     # Callbacks
 
@@ -27,5 +24,11 @@ module Coursewareable
     before_destroy do
       user.plan.decrement!(:used_space, attachment_file_size)
     end
+
+    # Check for left space
+    before_save do
+      attachment_file_size < user.plan.left_space ? true : false
+    end
+
   end
 end
