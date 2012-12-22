@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Coursewareable::Classroom do
+describe Coursewareable::Classroom , :focus => true do
 
   it { should validate_presence_of(:title) }
   it { should ensure_length_of(:title).is_at_least(4).is_at_most(32) }
@@ -15,6 +15,8 @@ describe Coursewareable::Classroom do
   it { should have_many(:images) }
   it { should have_many(:uploads) }
   it { should have_many(:lectures) }
+  it { should have_many(:assignments) }
+  it { should have_many(:responses) }
   it { should have_one(:syllabus) }
 
   Coursewareable.config.domain_blacklist.each do |domain|
