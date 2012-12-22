@@ -55,26 +55,40 @@ describe Coursewareable::Assignment do
   end
 
   describe 'quiz' do
-    it 'should properly serialize attributes' do
-      assignment = Coursewareable::Assignment.create(
-        :title => Faker::Lorem.sentence,
-        :content => Faker::HTMLIpsum.body
-      )
+    let(:quiz_data) {
+      [{ :content => Faker::Lorem.sentence, :type => :radios, :options => [
+        { :content => Faker::Lorem.word, :valid => true },
+        { :content => Faker::Lorem.word, :valid => false }]
+      }]
+    }
 
-      assignment.quiz = [
-        { :content => Faker::Lorem.sentence, :type => :radios, :options => [
-          { :content => Faker::Lorem.word, :valid => true },
-          { :content => Faker::Lorem.word, :valid => false }
-        ]}
-      ]
+    it 'should properly handle quiz attributes' do
+      assignment = Fabricate('coursewareable/assignment', :quiz => quiz_data)
 
-      assignment.save
       assignment.reload
-
       assignment.quiz.size.should eq(1)
       assignment.quiz.first.should_not be_empty
       assignment.quiz.first['type'].should eq('radios')
       assignment.quiz.first['options'].first['valid'].should be_true
+    end
+
+    it 'serializes properly attributes' do
+      assignment = Fabricate('coursewareable/assignment',
+                             :quiz => quiz_data.to_json)
+
+      assignment.reload
+      assignment.quiz.size.should eq(1)
+      assignment.quiz.first.should_not be_empty
+      assignment.quiz.first['type'].should eq('radios')
+      assignment.quiz.first['options'].first['valid'].should be_true
+    end
+
+    it 'handles invalid data properly' do
+      assignment = Fabricate('coursewareable/assignment',
+                             :quiz => 'test')
+
+      assignment.reload
+      assignment.quiz.should be_nil
     end
   end
 end

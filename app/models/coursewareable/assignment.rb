@@ -37,6 +37,15 @@ module Coursewareable
     before_validation do
       self.title = Sanitize.clean(self.title)
       self.content = Sanitize.clean(self.content, Sanitize::Config::RELAXED)
+
+      # If quiz data was not deserialized, do it now
+      if self.quiz.is_a?(String) and !self.quiz.blank?
+        begin
+          self.quiz = JSON.parse(self.quiz)
+        rescue
+          self.quiz = nil
+        end
+      end
     end
   end
 end
