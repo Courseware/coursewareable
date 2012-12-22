@@ -46,7 +46,7 @@ describe Coursewareable::Plan do
         initial_used_space = plan.reload.used_space
         expect{
           Fabricate('coursewareable/image', :user => plan.user)
-        }.to raise_error(ActiveRecord::RecordInvalid, /Attachment file size/)
+        }.to raise_error(ActiveRecord::RecordNotSaved)
 
         plan.reload
         plan.used_space.should eq(initial_used_space)
