@@ -156,7 +156,8 @@ module Coursewareable
       end
       # Can create response if user is a classroom member
       can :create, Coursewareable::Response do |resp|
-        resp.classroom.members.include?(@user)
+        resp.classroom.members.include?(@user) and
+          not resp.classroom.owner.eql?(@user)
       end
       # Can access response if user is a member of the classroom
       can :read, Coursewareable::Response do |resp|

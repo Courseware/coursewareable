@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'cancan/matchers'
 
-describe Coursewareable::User do
+describe Coursewareable::User, :focus => true do
   describe 'abilities' do
     subject { ability }
     let(:ability){ Coursewareable::Ability.new(user) }
@@ -18,6 +18,17 @@ describe Coursewareable::User do
         }
         it{ should_not be_able_to(:manage, response) }
         it{ should_not be_able_to(:show, response) }
+      end
+
+      context 'and owner' do
+        let(:user){ response.classroom.owner }
+
+        it{ should_not be_able_to(:create, Fabricate.build(
+          'coursewareable/response', :user => user,
+          :classroom => response.classroom))
+        }
+        it{ should be_able_to(:destroy, response) }
+        it{ should be_able_to(:show, response) }
       end
 
       context 'and a member' do
