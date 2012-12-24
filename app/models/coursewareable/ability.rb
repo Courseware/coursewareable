@@ -58,8 +58,7 @@ module Coursewareable
 
       # Can not create a classroom if plan limits reached
       can :create, Coursewareable::Classroom do |classroom|
-        classroom.owner.created_classrooms_count <
-        classroom.owner.plan.allowed_classrooms
+        @user.created_classrooms_count < @user.plan.allowed_classrooms
       end
     end
 
