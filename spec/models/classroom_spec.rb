@@ -28,7 +28,6 @@ describe Coursewareable::Classroom do
 
     it { should validate_uniqueness_of(:title) }
     it { should respond_to(:slug) }
-    it { should respond_to(:activities) }
     it { should respond_to(:memberships_count) }
     it { should respond_to(:header_image) }
     it { should respond_to(:color) }
@@ -38,7 +37,7 @@ describe Coursewareable::Classroom do
     its(:slug) { should match(/^[\w\-0-9]+$/) }
 
     it 'should generate a new activity' do
-      subject.owner.activities.collect(&:key).should(
+      subject.owner.activities_as_owner.collect(&:key).should(
         include('coursewareable_classroom.create')
       )
     end

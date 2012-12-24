@@ -20,12 +20,10 @@ describe Coursewareable::Assignment do
     it { should respond_to(:slug) }
     it { should respond_to(:quiz) }
 
-    its(:activities){ should_not be_empty }
-
     it 'should generate a new activity' do
-      subject.user.activities.collect(&:key).should(
+      subject.user.activities_as_owner.collect(&:key).should(
         include('coursewareable_assignment.create'))
-      subject.user.activities.collect(&:recipient).should(
+      subject.user.activities_as_owner.collect(&:recipient).should(
         include(subject.classroom)
       )
     end

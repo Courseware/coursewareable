@@ -13,12 +13,10 @@ describe Coursewareable::Syllabus do
   describe 'with all attributes' do
     subject{ Fabricate('coursewareable/syllabus') }
 
-    its(:activities){ should_not be_empty }
-
     it 'should generate a new activity' do
-      subject.user.activities.collect(&:key).should include(
+      subject.user.activities_as_owner.collect(&:key).should include(
         'coursewareable_syllabus.create')
-      subject.user.activities.collect(&:recipient).should(
+      subject.user.activities_as_owner.collect(&:recipient).should(
         include(subject.classroom)
       )
     end

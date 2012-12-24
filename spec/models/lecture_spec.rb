@@ -20,12 +20,11 @@ describe Coursewareable::Lecture do
     it { should respond_to(:slug) }
 
     its(:parent_lecture){ should be_nil }
-    its(:activities){ should_not be_empty }
 
     it 'should generate a new activity' do
-      subject.user.activities.collect(&:key).should include(
+      subject.user.activities_as_owner.collect(&:key).should include(
         'coursewareable_lecture.create')
-      subject.user.activities.collect(&:recipient).should(
+      subject.user.activities_as_owner.collect(&:recipient).should(
         include(subject.classroom)
       )
     end

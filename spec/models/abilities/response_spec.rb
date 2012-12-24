@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'cancan/matchers'
 
-describe Coursewareable::User, :focus => true do
+describe Coursewareable::User do
   describe 'abilities' do
     subject { ability }
     let(:ability){ Coursewareable::Ability.new(user) }

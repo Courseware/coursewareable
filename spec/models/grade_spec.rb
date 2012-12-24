@@ -17,13 +17,11 @@ describe Coursewareable::Grade do
   describe 'with all attributes' do
     subject{ Fabricate('coursewareable/grade') }
 
-    it { should respond_to(:activities) }
-
     its(:form) { should eq(:number) }
     its(:receiver) { should be_a(Coursewareable::User) }
 
     it 'should generate a new activity' do
-      subject.user.activities.collect(&:key).should include(
+      subject.user.activities_as_owner.collect(&:key).should include(
         'coursewareable_grade.create')
     end
   end
