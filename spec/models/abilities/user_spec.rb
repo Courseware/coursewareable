@@ -13,22 +13,34 @@ describe Coursewareable::User do
       it{ should_not be_able_to(:manage, Fabricate('coursewareable/user')) }
       it{ should be_able_to(:manage, user) }
 
-      it{ should be_able_to(:create, Coursewareable::Classroom) }
-      it{ should_not be_able_to(:update, Fabricate('coursewareable/classroom')) }
-      it{ should_not be_able_to(:destroy, Fabricate('coursewareable/classroom')) }
-      it{ should_not be_able_to(:dashboard, Fabricate('coursewareable/classroom')) }
-      it{ should be_able_to(:update, Fabricate('coursewareable/classroom', :owner => user)) }
-      it{ should be_able_to(:destroy, Fabricate('coursewareable/classroom', :owner => user)) }
-      it{ should be_able_to(:dashboard, Fabricate('coursewareable/classroom', :owner => user))}
+      it{ should be_able_to(
+        :create, Fabricate('coursewareable/classroom', :owner => user)) }
+      it{ should_not be_able_to(
+        :update, Fabricate('coursewareable/classroom')) }
+      it{ should_not be_able_to(
+        :destroy, Fabricate('coursewareable/classroom')) }
+      it{ should_not be_able_to(
+        :dashboard, Fabricate('coursewareable/classroom')) }
+      it{ should be_able_to(
+        :update, Fabricate('coursewareable/classroom', :owner => user)) }
+      it{ should be_able_to(
+        :destroy, Fabricate('coursewareable/classroom', :owner => user)) }
+      it{ should be_able_to(
+        :dashboard, Fabricate('coursewareable/classroom', :owner => user))}
 
-      it{ should_not be_able_to(:create, Fabricate.build('coursewareable/membership')) }
-      it{ should_not be_able_to(:create, Coursewareable::Collaboration) }
-      it{ should_not be_able_to(:destroy, Fabricate('coursewareable/membership')) }
-      it{ should_not be_able_to(:destroy, Fabricate('coursewareable/collaboration')) }
+      it{ should_not be_able_to(
+        :create, Fabricate.build('coursewareable/membership')) }
+      it{ should_not be_able_to(
+        :create, Coursewareable::Collaboration) }
+      it{ should_not be_able_to(
+        :destroy, Fabricate('coursewareable/membership')) }
+      it{ should_not be_able_to(
+        :destroy, Fabricate('coursewareable/collaboration')) }
 
-      context 'with plan limits reached' do
-        let(:user){ Fabricate('coursewareable/classroom').owner.reload }
-        it{ should_not be_able_to(:create, Coursewareable::Classroom ) }
+      context 'when allowed classrooms limit is reached' do
+        before { user.plan.decrement!(:allowed_classrooms, 100) }
+        it{ should_not be_able_to(
+          :create, Fabricate('coursewareable/classroom', :owner => user)) }
       end
 
       context 'with plan allowing collaborators' do
