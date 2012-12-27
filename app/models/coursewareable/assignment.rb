@@ -18,7 +18,7 @@ module Coursewareable
     belongs_to :classroom
 
     has_many :images, :as => :assetable, :class_name => Image
-    has_many :uploads, :as => :assetable, :class_name => Image
+    has_many :uploads, :as => :assetable, :class_name => Upload
     has_many :responses, :dependent => :destroy
     has_many :grades, :dependent => :destroy
 

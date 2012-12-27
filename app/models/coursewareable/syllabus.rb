@@ -11,7 +11,7 @@ module Coursewareable
     belongs_to :user
     belongs_to :classroom
     has_many :images, :as => :assetable, :class_name => Image
-    has_many :uploads, :as => :assetable, :class_name => Image
+    has_many :uploads, :as => :assetable, :class_name => Upload
 
     # Validations
     validates_presence_of :title, :content
