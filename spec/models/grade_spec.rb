@@ -13,6 +13,7 @@ describe Coursewareable::Grade do
   it { should belong_to(:classroom) }
   it { should belong_to(:assignment) }
   it { should belong_to(:receiver) }
+  it { should belong_to(:response) }
 
   describe 'with all attributes' do
     subject{ Fabricate('coursewareable/grade') }

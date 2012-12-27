@@ -15,6 +15,7 @@ module Coursewareable
     belongs_to :assignment
     belongs_to :user
     belongs_to :classroom
+    belongs_to :response
 
     # Validations
     validates_presence_of :mark, :form, :receiver

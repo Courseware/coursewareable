@@ -8,6 +8,7 @@ describe Coursewareable::Response do
   it { should belong_to(:assignment) }
   it { should have_many(:images) }
   it { should have_many(:uploads) }
+  it { should have_one(:grade) }
 
   describe 'with all attributes' do
     subject{ Fabricate('coursewareable/response') }
