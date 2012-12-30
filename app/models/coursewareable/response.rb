@@ -41,29 +41,27 @@ module Coursewareable
       stats = { :all => 0, :wrong => 0 }
 
       result = assignment.quiz.each_with_index do |question, position|
-        if question['type'] == 'radios'
-          stats[:all] += 1
-          valid_index = self.answers[position]['options']['answer'].to_i
+        question['options'].each_with_index do |option, index|
+          stats[:all] += 1 if option['valid'] == true
+          val = self.answers[position]['options'][index]['answer'] unless(
+            question['type'] == 'radios'
+          )
 
-          unless question['options'][valid_index]['valid']
-            question['options'][valid_index]['wrong'] = true
+          if question['type'] == 'text' and !val.match(/#{option['content']}/i)
+            option['wrong'] = true
             stats[:wrong] +=1
-          end
-        else
-          question['options'].each_with_index do |option, index|
-            stats[:all] += 1
-            val = self.answers[position]['options'][index]['answer']
-
-            if question['type'] == 'text' and
-              !val.match(/#{option['content']}/i)
-              option['wrong'] = true
-              stats[:wrong] +=1
-            elsif (option['valid'] == true and !val) or
-              (!option['valid'] and val)
+          elsif question['type'] == 'checkboxes' and
+            (option['valid'] == true and !val) or (!option['valid'] and val)
+            option['wrong'] = true
+            stats[:wrong] +=1
+          elsif question['type'] == 'radios'
+            answer = self.answers[position]['options']['answer'].to_i
+            if option['valid'] == true and answer != index
               option['wrong'] = true
               stats[:wrong] +=1
             end
           end
+
         end
       end
 

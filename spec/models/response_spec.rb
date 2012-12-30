@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Coursewareable::Response do
+describe Coursewareable::Response, :focus => true do
   it { should validate_presence_of(:content) }
 
   it { should belong_to(:user) }
@@ -60,7 +60,7 @@ describe Coursewareable::Response do
       subject { resp }
 
       its(:coverage) { should eq(100) }
-      its(:stats) { should eq({:all => 5, :wrong => 0}) }
+      its(:stats) { should eq({:all => 4, :wrong => 0}) }
     end
 
     context 'text answer wrong' do
@@ -72,9 +72,9 @@ describe Coursewareable::Response do
 
       subject { resp }
 
-      its(:coverage) { should eq(4 * 100.0 / 5) }
-      its(:stats) { should eq({:all => 5, :wrong => 1}) }
-      its(:answers) { subject.first['options'].first['wrong'].should be_true }
+      its(:coverage) { should eq(3 * 100.0 / 4) }
+      its(:stats) { should eq({:all => 4, :wrong => 1}) }
+      its(:answers) { subject[0]['options'][0]['wrong'].should be_true }
     end
 
     context 'checkbox answers mixed wrong' do
@@ -86,23 +86,23 @@ describe Coursewareable::Response do
 
       subject { resp }
 
-      its(:coverage) { should eq(3 * 100.0 / 5) }
-      its(:stats) { should eq({:all => 5, :wrong => 2}) }
+      its(:coverage) { should eq(2 * 100.0 / 4) }
+      its(:stats) { should eq({:all => 4, :wrong => 2}) }
       its(:answers) { subject[1]['options'][0]['wrong'].should be_true }
       its(:answers) { subject[1]['options'][1]['wrong'].should be_true }
     end
 
     context 'radio answers mixed wrong' do
       before do
-        resp.answers[2] = {'options' => {'answer' => 1 } }
+        resp.answers[2] = {'options' => {'answer' => 99 } }
         resp.save
       end
 
       subject { resp }
 
-      its(:coverage) { should eq(4 * 100.0 / 5) }
-      its(:stats) { should eq({:all => 5, :wrong => 1}) }
-      its(:answers) { subject[2]['options'][1]['wrong'].should be_true }
+      its(:coverage) { should eq(3 * 100.0 / 4) }
+      its(:stats) { should eq({:all => 4, :wrong => 1}) }
+      its(:answers) { subject[2]['options'][0]['wrong'].should be_true }
     end
 
   end
