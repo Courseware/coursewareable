@@ -5,7 +5,7 @@ module Coursewareable
   class Response < ActiveRecord::Base
     include PublicActivity::Model
 
-    attr_accessible :content
+    attr_accessible :content, :answers
 
     # Dynamic quiz store
     store :quiz, :accessors => [:answers, :stats, :coverage]
