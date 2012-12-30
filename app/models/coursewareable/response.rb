@@ -43,7 +43,7 @@ module Coursewareable
       result = assignment.quiz.each_with_index do |question, position|
         question['options'].each_with_index do |option, index|
           stats[:all] += 1 if option['valid'] == true
-          val = self.answers[position]['options'][index]['answer'] unless(
+          val = self.answers[position.to_s]['options'][index.to_s]['answer'] unless(
             question['type'] == 'radios'
           )
 
@@ -55,7 +55,7 @@ module Coursewareable
             option['wrong'] = true
             stats[:wrong] +=1
           elsif question['type'] == 'radios'
-            answer = self.answers[position]['options']['answer'].to_i
+            answer = self.answers[position.to_s]['options']['answer'].to_i
             if option['valid'] == true and answer != index
               option['wrong'] = true
               stats[:wrong] +=1

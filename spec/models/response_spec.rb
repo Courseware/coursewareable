@@ -41,16 +41,17 @@ describe Coursewareable::Response do
     let(:assignment) { Fabricate(:assignment_with_quiz) }
     let(:resp) do
       Fabricate.build('coursewareable/response', :assignment => assignment,
-        :answers => [
+        :answers => {
           # Text answer OK 1/1
-          {'options' => [ {
-            'answer' => assignment.quiz.first['options'].first['content'] } ] },
+          '0' => {'options' => { '0' => {
+            'answer' => assignment.quiz.first['options'].first['content'] } } },
           # Checkboxes answer OK 2/2
-          {'options' => [
-            {'answer' => true }, {'answer' => false }, {'answer' => true } ] },
+          '1' => {'options' => { '0' => {'answer' => true },
+                          '1' => {'answer' => false },
+                          '2' => {'answer' => true } } },
           # Radios answer OK 1/1
-          {'options' => {'answer' => 0 } }
-        ]
+          '2' => {'options' => {'answer' => 0 } }
+        }
       )
     end
 
@@ -65,8 +66,8 @@ describe Coursewareable::Response do
 
     context 'text answer wrong' do
       before do
-        resp.answers[0] = {'options' => [
-          { 'answer' => Faker::Lorem.word + '_WRONG' } ] }
+        resp.answers['0'] = {'options' => { '0' =>
+          { 'answer' => Faker::Lorem.word + '_WRONG' } } }
         resp.save
       end
 
@@ -79,8 +80,10 @@ describe Coursewareable::Response do
 
     context 'checkbox answers mixed wrong' do
       before do
-        resp.answers[1] = {'options' => [
-          {'answer' => false }, {'answer' => true }, {'answer' => true } ] }
+        resp.answers['1'] = {'options' => {
+          '0' => {'answer' => false },
+          '1' => {'answer' => true },
+          '2' => {'answer' => true } } }
         resp.save
       end
 
@@ -94,7 +97,7 @@ describe Coursewareable::Response do
 
     context 'radio answers mixed wrong' do
       before do
-        resp.answers[2] = {'options' => {'answer' => 99 } }
+        resp.answers['2'] = {'options' => {'answer' => 99 } }
         resp.save
       end
 
