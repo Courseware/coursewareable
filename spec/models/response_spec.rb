@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Coursewareable::Response do
   it { should validate_presence_of(:content) }
+  it { should validate_presence_of(:assignment) }
 
   it { should belong_to(:user) }
   it { should belong_to(:classroom) }
@@ -32,7 +33,7 @@ describe Coursewareable::Response do
       <iframe src="http://pwnr.com/pwnd"></iframe>'
     }
 
-    subject { Coursewareable::Response.create(:content => bad_long_input) }
+    subject { Fabricate('coursewareable/response', :content => bad_long_input)}
 
     its(:content) { should_not match(/\<(script|iframe)\>/) }
   end
@@ -105,6 +106,21 @@ describe Coursewareable::Response do
 
       its(:coverage) { should eq(3 * 100.0 / 4) }
       its(:stats) { should eq({:all => 4, :wrong => 1}) }
+      its(:answers) { subject[2]['options'][0]['wrong'].should be_true }
+    end
+
+    context 'answers are missing' do
+      before do
+        resp.update_attribute(:answers, nil)
+      end
+
+      subject { resp }
+
+      its(:coverage) { should eq(0 * 100.0 / 4) }
+      its(:stats) { should eq({:all => 4, :wrong => 4}) }
+      its(:answers) { subject[0]['options'][0]['wrong'].should be_true }
+      its(:answers) { subject[1]['options'][0]['wrong'].should be_true }
+      its(:answers) { subject[1]['options'][2]['wrong'].should be_true }
       its(:answers) { subject[2]['options'][0]['wrong'].should be_true }
     end
 
