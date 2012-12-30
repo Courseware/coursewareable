@@ -37,27 +37,32 @@ module Coursewareable
 
     # Evaluates answers against the questions
     def process_answers
-      return if answers.blank?
+      return if self.answers.blank?
       stats = { :all => 0, :wrong => 0 }
 
       result = assignment.quiz.each_with_index do |question, position|
-        question['options'].each_with_index do |option, index|
+        if question['type'] == 'radios'
           stats[:all] += 1
-          if question['type'] == 'text'
-            if(!self.answers[position]['options'][index]['answer'].match(
-              /#{option['content']}/i))
+          valid_index = self.answers[position]['options']['answer'].to_i
+
+          unless question['options'][valid_index]['valid']
+            question['options'][valid_index]['wrong'] = true
+            stats[:wrong] +=1
+          end
+        else
+          question['options'].each_with_index do |option, index|
+            stats[:all] += 1
+            val = self.answers[position]['options'][index]['answer']
+
+            if question['type'] == 'text' and
+              !val.match(/#{option['content']}/i)
+              option['wrong'] = true
+              stats[:wrong] +=1
+            elsif (option['valid'] == true and !val) or
+              (!option['valid'] and val)
               option['wrong'] = true
               stats[:wrong] +=1
             end
-          elsif(option['valid'] == true and
-                !self.answers[position]['options'][index]['answer'])
-            option['wrong'] = true
-            stats[:wrong] +=1
-          elsif(!option['valid'] and
-                self.answers[position]['options'][index]['answer'] and
-                question['type'] != 'radios')
-            option['wrong'] = true
-            stats[:wrong] +=1
           end
         end
       end
