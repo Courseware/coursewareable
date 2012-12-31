@@ -4,10 +4,9 @@ require 'sanitize'
 module Coursewareable
   # Coursewareableable classroom model
   class Classroom < ActiveRecord::Base
-    extend FriendlyId
     include PublicActivity::Model
 
-    attr_accessible :description, :title
+    attr_accessible :description, :title, :slug
 
     # Dynamic settings store
     store :settings, :accessors => [:color_scheme, :header_image, :color]
@@ -29,13 +28,10 @@ module Coursewareable
     has_one :syllabus
 
     # Validations
-    validates_presence_of :title, :slug, :description
-    validates_uniqueness_of :title, :case_sensitive => false
-    validates_exclusion_of :title, :in => Coursewareable.config.domain_blacklist
-    validates_length_of :title, :minimum => 4, :maximum => 32
-
-    # Generate title slug
-    friendly_id :title, :use => :slugged
+    validates_presence_of :title, :description
+    validates_uniqueness_of :slug, :case_sensitive => false
+    validates_exclusion_of :slug, :in => Coursewareable.config.domain_blacklist
+    validates_length_of :slug, :minimum => 4, :maximum => 32
 
     # Track activities
     tracked :owner => :owner, :only => [:create]
@@ -44,6 +40,7 @@ module Coursewareable
     # Cleanup title and description before saving it
     before_validation do
       self.title = Sanitize.clean(self.title)
+      self.slug = (self.slug || self.title).parameterize
       self.description = Sanitize.clean(
         self.description, Sanitize::Config::RESTRICTED)
     end

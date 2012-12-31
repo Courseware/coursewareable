@@ -1,12 +1,6 @@
 require 'spec_helper'
 
 describe Coursewareable::Classroom do
-
-  it { should validate_presence_of(:title) }
-  it { should ensure_length_of(:title).is_at_least(4).is_at_most(32) }
-  it { should validate_presence_of(:slug) }
-  it { should validate_presence_of(:description) }
-
   it { should belong_to(:owner) }
   it { should have_many(:memberships).dependent(:destroy) }
   it { should have_many(:members).through(:memberships) }
@@ -20,14 +14,17 @@ describe Coursewareable::Classroom do
   it { should have_one(:syllabus) }
 
   Coursewareable.config.domain_blacklist.each do |domain|
-    it { should_not allow_value(domain).for(:title) }
+    it { should_not allow_value(domain).for(:slug) }
   end
 
   describe 'with all attributes' do
     subject{ Fabricate('coursewareable/classroom') }
 
-    it { should validate_uniqueness_of(:title) }
-    it { should respond_to(:slug) }
+    it { should validate_presence_of(:title) }
+    it { should validate_presence_of(:description) }
+    it { should ensure_length_of(:slug).is_at_least(4).is_at_most(32) }
+    it { should validate_uniqueness_of(:slug) }
+
     it { should respond_to(:memberships_count) }
     it { should respond_to(:header_image) }
     it { should respond_to(:color) }
@@ -47,7 +44,22 @@ describe Coursewareable::Classroom do
     end
   end
 
-  describe 'sanitization' do
+  context 'sanitization' do
+    context 'generates slug from title' do
+      let(:title) { Faker::Lorem.sentence }
+      before { subject.update_attributes({:title => title}) }
+
+      its(:slug) { should eq(title.parameterize) }
+    end
+
+    context 'parameterizes slug' do
+      let(:title) { Faker::Lorem.sentence }
+      let(:slug) { Faker::Lorem.sentence }
+      before { subject.update_attributes({:title => title, :slug => slug}) }
+
+      its(:slug) { should eq(slug.parameterize) }
+    end
+
     it 'should not allow html' do
       bad_input = Faker::HTMLIpsum.body + '
       <script>alert("PWND")</script>
