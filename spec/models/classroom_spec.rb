@@ -58,6 +58,11 @@ describe Coursewareable::Classroom do
       before { subject.update_attributes({:title => title, :slug => slug}) }
 
       its(:slug) { should eq(slug.parameterize) }
+
+      context 'even if its blank' do
+        let(:slug) { '' }
+        its(:slug) { should eq(title.parameterize) }
+      end
     end
 
     it 'should not allow html' do
