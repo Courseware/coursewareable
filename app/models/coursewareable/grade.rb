@@ -8,7 +8,7 @@ module Coursewareable
     # Allowed grade forms
     ALLOWED_FORMS = [:number, :percent, :letter]
 
-    attr_accessible :comment, :form, :mark, :receiver
+    attr_accessible :comment, :form, :mark, :receiver_id
 
     # Relationships
     belongs_to :receiver, :class_name => User
