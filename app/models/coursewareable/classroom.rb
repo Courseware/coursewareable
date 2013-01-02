@@ -25,6 +25,7 @@ module Coursewareable
     has_many :lectures
     has_many :assignments
     has_many :responses
+    has_many :grades
     has_one :syllabus
 
     # Validations

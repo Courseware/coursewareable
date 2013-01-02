@@ -11,6 +11,7 @@ describe Coursewareable::Classroom do
   it { should have_many(:lectures) }
   it { should have_many(:assignments) }
   it { should have_many(:responses) }
+  it { should have_many(:grades) }
   it { should have_one(:syllabus) }
 
   Coursewareable.config.domain_blacklist.each do |domain|
