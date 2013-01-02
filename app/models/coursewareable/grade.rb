@@ -29,5 +29,10 @@ module Coursewareable
     before_validation do
       self.comment = Sanitize.clean(self.comment)
     end
+
+    before_save do
+      return false if !classroom.members.include?(receiver) or
+        classroom.owner.id == receiver_id
+    end
   end
 end

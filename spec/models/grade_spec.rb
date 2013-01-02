@@ -27,6 +27,22 @@ describe Coursewareable::Grade do
     end
   end
 
+  describe 'receiver is the owner of the classroom' do
+    let(:classroom) { Fabricate('coursewareable/classroom') }
+    let(:receiver) { classroom.owner }
+    let(:grade) {Fabricate.build('coursewareable/grade', :receiver => receiver)}
+
+    subject { grade.save }
+
+    it { should be_false }
+
+    context 'or is not a member' do
+      let(:receiver) { Fabricate('coursewareable/user') }
+    end
+
+    it { should be_false }
+  end
+
   describe 'sanitization' do
     it 'should not allow html' do
       bad_input = Faker::HTMLIpsum.body + '
