@@ -40,6 +40,16 @@ describe Coursewareable::Grade do
       let(:receiver) { Fabricate('coursewareable/user') }
     end
 
+    context 'or member has already one grade' do
+      let(:new_grade) do
+        Fabricate.build('coursewareable/grade', :receiver => grade.user)
+      end
+
+      subject { new_grade.save }
+
+      it { should be_false }
+    end
+
     it { should be_false }
   end
 
