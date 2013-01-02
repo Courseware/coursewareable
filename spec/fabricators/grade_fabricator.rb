@@ -1,5 +1,5 @@
 Fabricator('coursewareable/grade') do
-  form        :number
+  form        'number'
   mark        { rand(1..10) }
   comment     Faker::HTMLIpsum.body
   user(:fabricator => 'coursewareable/user')

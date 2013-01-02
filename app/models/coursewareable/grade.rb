@@ -6,7 +6,7 @@ module Coursewareable
     include PublicActivity::Model
 
     # Allowed grade forms
-    ALLOWED_FORMS = [:number, :percent, :letter]
+    ALLOWED_FORMS = ['number', 'percent', 'letter']
 
     attr_accessible :comment, :form, :mark, :receiver_id
 
