@@ -13,7 +13,6 @@ Gem::Specification.new do |s|
   s.files       = `git ls-files`.split("\n")
   s.test_files  = `git ls-files -- spec/*`.split("\n")
 
-  s.add_dependency 'rails'
   s.add_dependency 'cancan'
   s.add_dependency 'sorcery'
   s.add_dependency 'public_activity'
@@ -21,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'paperclip'
   s.add_dependency 'sanitize'
 
+  s.add_development_dependency 'rails'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'pg'
   s.add_development_dependency 'ffaker'

@@ -6,7 +6,6 @@ PATH
       friendly_id
       paperclip
       public_activity
-      rails
       sanitize
       sorcery
 
@@ -193,6 +192,7 @@ DEPENDENCIES
   guard-rspec
   guard-spork
   pg
+  rails
   rb-inotify
   rspec-rails
   shoulda-matchers
