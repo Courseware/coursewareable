@@ -56,6 +56,11 @@ module Coursewareable
           classroom.collaborators.include?(@user)
       end
 
+      # Can contribute to the classroom if only an owner or collaborator
+      can :contribute, Coursewareable::Classroom do |classroom|
+        classroom.owner.eql?(@user) or classroom.collaborators.include?(@user)
+      end
+
       # Can not create a classroom if plan limits reached
       can :create, Coursewareable::Classroom do |classroom|
         classroom.owner.created_classrooms_count <

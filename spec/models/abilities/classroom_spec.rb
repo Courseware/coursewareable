@@ -10,24 +10,25 @@ describe Coursewareable::User do
       let(:classroom){ Fabricate('coursewareable/classroom') }
       let(:user){ classroom.owner.reload }
 
+      it{ should be_able_to(:dashboard, classroom)}
+      it{ should be_able_to(:contribute, classroom)}
+
       context 'members' do
-        it{ should be_able_to(:dashboard, classroom)}
         it{ should be_able_to(:create, Fabricate.build(
           'coursewareable/membership', :classroom => classroom,
           :user => Fabricate('coursewareable/user'))) }
-        it{ should be_able_to(:destroy, Fabricate('coursewareable/membership',
-                                                  :classroom => classroom))}
+        it{ should be_able_to(:destroy, Fabricate(
+          'coursewareable/membership', :classroom => classroom))}
       end
 
       context 'collaborators' do
         before{ user.plan.increment!(:allowed_collaborators)}
 
-        it{ should be_able_to(:dashboard, classroom)}
         it{ should be_able_to(:create, Fabricate.build(
           'coursewareable/collaboration', :classroom => classroom,
           :user => Fabricate('coursewareable/user'))) }
-        it{ should be_able_to(:destroy, Fabricate('coursewareable/collaboration',
-                                                  :classroom => classroom))}
+        it{ should be_able_to(:destroy, Fabricate(
+          'coursewareable/collaboration', :classroom => classroom))}
       end
 
       context 'lectures' do
