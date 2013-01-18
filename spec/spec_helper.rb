@@ -1,7 +1,7 @@
 require 'ffaker'
 
-# Use simplecov only if drb server is not running
-unless ENV['DRB']
+# Use simplecov only if guard is not running
+unless ENV['GUARD_NOTIFICATIONS']
   require 'simplecov'
   SimpleCov.start 'rails' do
     root File.expand_path('../../', __FILE__)
