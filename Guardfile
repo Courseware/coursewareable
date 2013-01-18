@@ -1,7 +1,7 @@
 # Coursewareable Guardfile
 # More info at https://github.com/guard/guard#readme
 
-guard 'rspec', :cli => '--drb --color' do
+guard 'rspec', :cli => '--color' do
   watch(%r{^spec/.+_spec\.rb$})
   watch('spec/spec_helper.rb')        { "spec" }
   watch(%r{^app/(.+)\.rb$})           { |m| "spec/#{m[1]}_spec.rb" }
