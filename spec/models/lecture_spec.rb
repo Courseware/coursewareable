@@ -9,6 +9,7 @@ describe Coursewareable::Lecture do
   it { should belong_to(:user) }
   it { should belong_to(:classroom) }
   it { should belong_to(:parent_lecture) }
+  it { should have_many(:child_lectures) }
   it { should have_many(:images) }
   it { should have_many(:uploads) }
   it { should have_many(:assignments).dependent(:destroy) }

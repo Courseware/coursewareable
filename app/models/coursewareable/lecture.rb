@@ -16,6 +16,8 @@ module Coursewareable
     has_many :images, :as => :assetable, :class_name => Image
     has_many :uploads, :as => :assetable, :class_name => Upload
     has_many :assignments, :dependent => :destroy
+    has_many(:child_lectures, :class_name => Lecture,
+             :foreign_key => :parent_lecture_id)
 
     # Validations
     validates_presence_of :title, :slug, :content
