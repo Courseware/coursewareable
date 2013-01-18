@@ -29,7 +29,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'shoulda-matchers'
   s.add_development_dependency 'database_cleaner'
   s.add_development_dependency 'simplecov'
-  s.add_development_dependency 'guard-spork'
   s.add_development_dependency 'guard-rspec'
   s.add_development_dependency 'rb-inotify'
 end
