@@ -26,7 +26,7 @@ module Coursewareable
     validates_presence_of :assignment
 
     # Track activities
-    tracked :owner => :user, :recipient => :classroom
+    tracked :owner => :user, :recipient => :classroom, :only => [:create]
 
     # Callbacks
     # Cleanup title and description before saving it

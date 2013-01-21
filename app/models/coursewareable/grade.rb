@@ -23,7 +23,8 @@ module Coursewareable
     validates_uniqueness_of :receiver_id, :scope => :assignment_id
 
     # Track activities
-    tracked :owner => :user, :recipient => :classroom
+    tracked :owner => :user, :recipient => :classroom, :only => [
+      :create, :update]
 
     # Callbacks
     # Cleanup title and description before saving it
