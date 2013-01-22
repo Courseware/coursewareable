@@ -20,6 +20,7 @@ module Coursewareable
     has_many :members, :through => :memberships, :source => :user
     has_many :collaborations, :dependent => :destroy
     has_many :collaborators, :through => :collaborations, :source => :user
+    has_many :assets
     has_many :images
     has_many :uploads
     has_many :lectures

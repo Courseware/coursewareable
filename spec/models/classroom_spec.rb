@@ -6,6 +6,7 @@ describe Coursewareable::Classroom do
   it { should have_many(:members).through(:memberships) }
   it { should have_many(:collaborations).dependent(:destroy) }
   it { should have_many(:collaborators).through(:collaborations) }
+  it { should have_many(:assets) }
   it { should have_many(:images) }
   it { should have_many(:uploads) }
   it { should have_many(:lectures) }
