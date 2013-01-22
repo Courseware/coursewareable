@@ -46,7 +46,7 @@ describe Coursewareable::User do
       end
 
       before do
-        subject.update_attributes({:description => bad_input})
+        subject.update_attribute(:description, bad_input)
       end
 
       its(:description) { should_not match(/\<(script|iframe)\>/) }

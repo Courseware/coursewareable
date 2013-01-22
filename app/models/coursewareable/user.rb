@@ -51,7 +51,7 @@ module Coursewareable
       user.plan = Plan.create(plan.except(:cost))
     end
     # Cleanup description before saving it
-    before_validation do
+    before_save do
       self.description = Sanitize.clean(
         self.description, Sanitize::Config::RESTRICTED)
     end
