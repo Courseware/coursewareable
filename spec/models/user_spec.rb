@@ -9,6 +9,8 @@ describe Coursewareable::User do
   it { should validate_presence_of(:email) }
   it { should validate_format_of(:email).with('stas+cw@nerd.ro') }
 
+  it { should ensure_length_of(:description).is_at_most(1000) }
+
   it { should have_one(:plan) }
   it { should have_many(:memberships).dependent(:destroy) }
   it { should have_many(:collaborations).dependent(:destroy) }
@@ -34,6 +36,22 @@ describe Coursewareable::User do
     its(:name) { should match(/\w?+ \w?+/) }
     its(:plan) { should be_a(Coursewareable::Plan) }
     its('plan.slug') { should eq(:free) }
+
+    context 'sanitization' do
+      let(:bad_input) do
+        Faker::HTMLIpsum.body + '
+          <script>alert("PWND")</script>
+          <iframe src="http://pwnr.com/pwnd"></iframe>
+        '
+      end
+
+      before do
+        subject.update_attributes({:description => bad_input})
+      end
+
+      its(:description) { should_not match(/\<(script|iframe)\>/) }
+      its(:description) { should_not match(/\<(h1|li|ol)\>/) }
+    end
   end
 
   describe 'with no first/last name' do

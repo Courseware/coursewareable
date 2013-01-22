@@ -9,7 +9,7 @@ module Coursewareable
     authenticates_with_sorcery!
 
     attr_accessible :email, :password, :password_confirmation,
-      :first_name, :last_name
+      :first_name, :last_name, :description
 
     # Relationships
     has_many(
@@ -40,6 +40,7 @@ module Coursewareable
     validates_presence_of :email
     validates_uniqueness_of :email
     validates_format_of :email, :with => EMAIL_FORMAT, :on => :create
+    validates_length_of :description, :maximum => 1000
 
     # Enable public activity
     activist
@@ -48,6 +49,11 @@ module Coursewareable
     before_create do |user|
       plan = Coursewareable.config.plans[:free]
       user.plan = Plan.create(plan.except(:cost))
+    end
+    # Cleanup description before saving it
+    before_validation do
+      self.description = Sanitize.clean(
+        self.description, Sanitize::Config::RESTRICTED)
     end
 
     # Helper to generate user's name
