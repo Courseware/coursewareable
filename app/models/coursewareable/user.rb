@@ -20,7 +20,10 @@ module Coursewareable
 
     has_many :memberships, :dependent => :destroy
     has_many :collaborations, :dependent => :destroy
-    has_many :classrooms, :through => :memberships
+    has_many(:membership_classrooms,
+             :through => :memberships, :source => :classroom)
+    has_many(:collaboration_classrooms,
+             :through => :collaborations, :source => :classroom)
     has_many :images
     has_many :uploads
     has_many :lectures
@@ -60,6 +63,11 @@ module Coursewareable
     def name
       return [first_name, last_name].join(' ') if first_name and last_name
       email
+    end
+
+    # Helper to fetch all classrooms related to user
+    def classrooms
+      return membership_classrooms + collaboration_classrooms
     end
 
   end
