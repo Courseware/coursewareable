@@ -83,10 +83,10 @@ module Coursewareable
     # [Classroom] [Collaboration] relevant abilities
     def collaboration_abilities
       # Can not add a classroom collaborator if limit reached
-      if @user.collaborations_count < @user.plan.allowed_collaborators
-        can :create, Coursewareable::Collaboration do |col|
-          col.classroom.owner.eql?(@user)
-        end
+      can :create, Coursewareable::Collaboration do |col|
+        col.classroom.owner.eql?(@user) and (
+          col.classroom.owner.collaborations_count <
+           col.classroom.owner.plan.allowed_collaborators)
       end
       # Can remove own classroom collaboration
       can :destroy, Coursewareable::Collaboration do |col|

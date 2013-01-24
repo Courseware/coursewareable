@@ -31,7 +31,7 @@ describe Coursewareable::User do
       it{ should_not be_able_to(
         :create, Fabricate.build('coursewareable/membership')) }
       it{ should_not be_able_to(
-        :create, Coursewareable::Collaboration) }
+        :create, Fabricate.build('coursewareable/collaboration')) }
       it{ should_not be_able_to(
         :destroy, Fabricate('coursewareable/membership')) }
       it{ should_not be_able_to(
@@ -44,8 +44,11 @@ describe Coursewareable::User do
       end
 
       context 'with plan allowing collaborators' do
+        let(:classroom) { Fabricate('coursewareable/classroom', :owner => user)}
         before{ user.plan.increment!(:allowed_collaborators)}
-        it{ should be_able_to(:create, Coursewareable::Collaboration) }
+
+        it{ should be_able_to(:create, Fabricate.build(
+          'coursewareable/collaboration', :classroom => classroom)) }
       end
 
     end
