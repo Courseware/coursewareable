@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Coursewareable::Membership, :focus => true do
+describe Coursewareable::Membership do
   it { should belong_to(:user) }
   it { should belong_to(:classroom) }
 

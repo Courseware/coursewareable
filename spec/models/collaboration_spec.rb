@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Coursewareable::Collaboration, :focus => true do
+describe Coursewareable::Collaboration do
   it { should belong_to(:user) }
   it { should belong_to(:classroom) }
 

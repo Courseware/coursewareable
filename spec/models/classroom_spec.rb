@@ -86,10 +86,11 @@ describe Coursewareable::Classroom do
   describe '#all_activities' do
     it 'should query all available activities' do
       classroom = Fabricate('coursewareable/classroom')
-      classroom.all_activities.count.should eq(1)
+      # One from classroom creation, second from membership creation
+      classroom.all_activities.count.should eq(2)
 
       Fabricate('coursewareable/syllabus', :classroom => classroom)
-      classroom.all_activities.count.should eq(2)
+      classroom.all_activities.count.should eq(3)
     end
   end
 
