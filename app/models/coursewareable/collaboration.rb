@@ -11,6 +11,7 @@ module Coursewareable
 
     # Track activities
     tracked(:owner => :creator, :recipient => :classroom,
+            :params => {:user_name => proc {|c, m| m.user.name}},
             :only => [:create, :destroy])
   end
 end
