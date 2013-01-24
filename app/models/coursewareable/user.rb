@@ -70,5 +70,10 @@ module Coursewareable
       return membership_classrooms + collaboration_classrooms
     end
 
+    # Sugaring to count created collaborations across created classrooms
+    def created_classrooms_collaborations_count
+      created_classrooms.map(&:collaborations_count).reduce(:+).to_i
+    end
+
   end
 end

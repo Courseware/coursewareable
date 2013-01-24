@@ -37,6 +37,14 @@ describe Coursewareable::User do
     its(:name) { should match(/\w?+ \w?+/) }
     its(:plan) { should be_a(Coursewareable::Plan) }
     its('plan.slug') { should eq(:free) }
+    its(:created_classrooms_collaborations_count) { should eq(0) }
+
+    context 'if adds a collaborator' do
+      let(:classroom){ Fabricate('coursewareable/classroom', :owner => subject)}
+      before{Fabricate('coursewareable/collaboration', :classroom => classroom)}
+
+      its(:created_classrooms_collaborations_count) { should eq(1) }
+    end
 
     context 'sanitization' do
       let(:bad_input) do
@@ -74,7 +82,7 @@ describe Coursewareable::User do
       its(:classrooms) { should include(classroom_for_collab) }
     end
 
-    context 'when added as collaborator' do
+    context 'when added as member' do
       before { classroom_for_member.members << subject }
       its(:classrooms) { should include(classroom_for_member) }
     end
