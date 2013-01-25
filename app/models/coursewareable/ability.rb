@@ -78,7 +78,7 @@ module Coursewareable
       # Can remove own classroom membership if not owner membership
       can :destroy, Coursewareable::Membership do |mem|
         (mem.classroom.owner.eql?(@user) and !mem.user.eql?(@user)) or
-          mem.user.eql?(@user)
+          (mem.user.eql?(@user) and !mem.classroom.owner.eql?(@user))
       end
     end
 

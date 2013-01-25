@@ -24,7 +24,7 @@ describe Coursewareable::User do
         it{ should_not be_able_to(:create, Fabricate.build(
           'coursewareable/membership',:user => user, :classroom => classroom))}
         # Remove himself
-        it{ should_not be_able_to(:delete, Fabricate(
+        it{ should_not be_able_to(:destroy, Fabricate(
           'coursewareable/membership',:user => user, :classroom => classroom))}
       end
 
