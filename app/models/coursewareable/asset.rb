@@ -15,6 +15,11 @@ module Coursewareable
 
     # Callbacks
 
+    # Cleanup description before saving it
+    before_validation do
+      self.description = Sanitize.clean(self.description)
+    end
+
     # Increment user used space
     after_create do
       user.plan.increment!(:used_space, attachment_file_size)

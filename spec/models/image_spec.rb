@@ -16,4 +16,16 @@ describe Coursewareable::Image do
   it { should validate_presence_of(:user) }
   it { should validate_presence_of(:classroom) }
   it { should validate_presence_of(:assetable) }
+
+  context 'sanitization' do
+    it 'should not allow html' do
+      bad_input = Faker::HTMLIpsum.body + '
+      <script>alert("PWND")</script>
+      <iframe src="http://pwnr.com/pwnd"></iframe>
+      '
+
+      image = Fabricate.build('coursewareable/image', :description => bad_input)
+      image.description.should_not match(/\<\>/)
+    end
+  end
 end
