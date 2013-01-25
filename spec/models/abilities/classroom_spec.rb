@@ -19,6 +19,13 @@ describe Coursewareable::User do
           :user => Fabricate('coursewareable/user'))) }
         it{ should be_able_to(:destroy, Fabricate(
           'coursewareable/membership', :classroom => classroom))}
+
+        # Duplication
+        it{ should_not be_able_to(:create, Fabricate.build(
+          'coursewareable/membership',:user => user, :classroom => classroom))}
+        # Remove himself
+        it{ should_not be_able_to(:delete, Fabricate(
+          'coursewareable/membership',:user => user, :classroom => classroom))}
       end
 
       context 'collaborators' do
@@ -29,6 +36,16 @@ describe Coursewareable::User do
           :user => Fabricate('coursewareable/user'))) }
         it{ should be_able_to(:destroy, Fabricate(
           'coursewareable/collaboration', :classroom => classroom))}
+
+        context 'except duplications' do
+          let!(:colab) do
+            Fabricate('coursewareable/collaboration', :classroom => classroom)
+          end
+
+          it{ should_not be_able_to(:create, Fabricate.build(
+            'coursewareable/collaboration',:user => colab.user,
+            :classroom => classroom))}
+        end
       end
 
       context 'lectures' do

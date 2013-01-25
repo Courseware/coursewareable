@@ -72,11 +72,13 @@ module Coursewareable
     def membership_abilities
       # Can create own classroom memberships
       can :create, Coursewareable::Membership do |mem|
-        mem.classroom.owner.eql?(@user)
+        mem.classroom.owner.eql?(@user) and
+          !mem.classroom.members.include?(mem.user)
       end
-      # Can remove own classroom membership
+      # Can remove own classroom membership if not owner membership
       can :destroy, Coursewareable::Membership do |mem|
-        mem.user.eql?(@user) or mem.classroom.owner.eql?(@user)
+        (mem.classroom.owner.eql?(@user) and !mem.user.eql?(@user)) or
+          mem.user.eql?(@user)
       end
     end
 
@@ -86,7 +88,8 @@ module Coursewareable
       can :create, Coursewareable::Collaboration do |col|
         col.classroom.owner.eql?(@user) and (
           @user.created_classrooms_collaborations_count <
-            @user.plan.allowed_collaborators)
+            @user.plan.allowed_collaborators) and
+              !col.classroom.collaborators.include?(col.user)
       end
       # Can remove own classroom collaboration
       can :destroy, Coursewareable::Collaboration do |col|
