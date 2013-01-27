@@ -25,6 +25,17 @@ describe Coursewareable::Response do
         include(subject.classroom)
       )
     end
+
+    context 'generated activity parameters' do
+      let(:activity) do
+        subject.classroom.all_activities.where(
+          :key => 'coursewareable_response.create').first
+      end
+
+      it 'parameters should not be empty' do
+        activity.parameters[:user_name].should eq(subject.user.name)
+      end
+    end
   end
 
   describe 'sanitization' do
