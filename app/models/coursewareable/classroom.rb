@@ -36,7 +36,10 @@ module Coursewareable
     validates_length_of :slug, :minimum => 4, :maximum => 32
 
     # Track activities
-    tracked :owner => :owner, :only => [:create]
+    tracked(:owner => :owner, :only => [:create], :params => {
+      :user_name => proc {|c, m| m.owner.name},
+      :classroom_title => proc {|c, m| m.title}
+    })
 
     # Callbacks
     # Cleanup title and description before saving it

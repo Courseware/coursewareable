@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Coursewareable::Classroom do
+describe Coursewareable::Classroom, :focus => true do
   it { should belong_to(:owner) }
   it { should have_many(:memberships).dependent(:destroy) }
   it { should have_many(:members).through(:memberships) }
@@ -43,6 +43,17 @@ describe Coursewareable::Classroom do
 
     it 'should have the owner in memberships' do
       subject.members.should include(subject.owner)
+    end
+
+    context 'generated activity parameters' do
+      let(:activity) do
+        subject.all_activities.first
+      end
+
+      it 'parameters should not be empty' do
+        activity.parameters[:user_name].should eq(subject.owner.name)
+        activity.parameters[:classroom_title].should eq(subject.title)
+      end
     end
   end
 
