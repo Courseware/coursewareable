@@ -13,7 +13,6 @@ describe Coursewareable::Collaboration do
       owner.activities_as_owner.collect(&:key).should(
         include('coursewareable_collaboration.create')
       )
-      owner.activities_as_owner.last.parameters[:user_name].should eq(user_name)
     end
 
     it 'should generate a new activity on deletion' do
@@ -21,7 +20,22 @@ describe Coursewareable::Collaboration do
       owner.activities_as_owner.collect(&:key).should(
         include('coursewareable_collaboration.destroy')
       )
-      owner.activities_as_owner.last.parameters[:user_name].should eq(user_name)
+    end
+
+    context 'generated activity parameters' do
+      let(:activity) do
+        collaboration.classroom.all_activities.where(
+          :key => 'coursewareable_collaboration.create').first
+      end
+
+      it 'parameters should not be empty' do
+        activity.parameters[:user_name].should eq(
+          collaboration.creator.name)
+        activity.parameters[:collaborator_name].should eq(
+          collaboration.user.name)
+        activity.parameters[:classroom_title].should eq(
+          collaboration.classroom.title)
+      end
     end
   end
 end
