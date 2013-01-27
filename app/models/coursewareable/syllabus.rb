@@ -17,7 +17,9 @@ module Coursewareable
     validates_presence_of :title, :content
 
     # Track activities
-    tracked :owner => :user, :recipient => :classroom, :only => [:create]
+    tracked(:owner => :user, :recipient => :classroom, :params => {
+      :user_name => proc {|c, m| m.user.name}
+    }, :only => [:create])
 
     # Callbacks
     # Cleanup title, content and intro

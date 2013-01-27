@@ -20,6 +20,17 @@ describe Coursewareable::Syllabus do
         include(subject.classroom)
       )
     end
+
+    context 'generated activity parameters' do
+      let(:activity) do
+        subject.classroom.all_activities.where(
+          :key => 'coursewareable_syllabus.create').first
+      end
+
+      it 'parameters should not be empty' do
+        activity.parameters[:user_name].should eq(subject.user.name)
+      end
+    end
   end
 
   describe 'sanitization' do
@@ -38,7 +49,7 @@ describe Coursewareable::Syllabus do
       <iframe src="http://pwnr.com/pwnd"></iframe>
       '
 
-      syllabus = Coursewareable::Syllabus.create(
+      syllabus = Fabricate('coursewareable/syllabus',
         :title => bad_input,
         :content => bad_long_input,
         :intro => bad_input
