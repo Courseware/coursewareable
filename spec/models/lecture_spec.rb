@@ -29,6 +29,17 @@ describe Coursewareable::Lecture do
         include(subject.classroom)
       )
     end
+
+    context 'generated activity parameters' do
+      let(:activity) do
+        subject.classroom.all_activities.where(
+          :key => 'coursewareable_lecture.create').first
+      end
+
+      it 'parameters should not be empty' do
+        activity.parameters[:user_name].should eq(subject.user.name)
+      end
+    end
   end
 
   describe 'sanitization' do
@@ -45,7 +56,7 @@ describe Coursewareable::Lecture do
       <iframe src="http://pwnr.com/pwnd"></iframe>
       '
 
-      lecture = Coursewareable::Lecture.create(
+      lecture = Fabricate('coursewareable/lecture',
         :title => bad_input,
         :content => bad_long_input,
         :requisite => bad_input
