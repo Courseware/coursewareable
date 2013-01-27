@@ -20,17 +20,29 @@ describe Coursewareable::Assignment do
     it { should respond_to(:slug) }
     it { should respond_to(:quiz) }
 
-    it 'should generate a new activity' do
+    it 'generates a new activity' do
       subject.user.activities_as_owner.collect(&:key).should(
         include('coursewareable_assignment.create'))
       subject.user.activities_as_owner.collect(&:recipient).should(
         include(subject.classroom)
       )
     end
+
+    context 'generated activity parameters' do
+      let(:activity) do
+        subject.classroom.all_activities.where(
+          :key => 'coursewareable_assignment.create').first
+      end
+
+      it 'parameters should not be empty' do
+        activity.parameters[:user_name].should eq(subject.user.name)
+        activity.parameters[:classroom_title].should eq(subject.classroom.title)
+      end
+    end
   end
 
   describe 'sanitization' do
-    it 'should not allow html' do
+    it 'allows no html' do
       bad_input = '
       <h1>Heading</h1>
       <ol><li>Name</li></ol>
@@ -43,7 +55,7 @@ describe Coursewareable::Assignment do
       <iframe src="http://pwnr.com/pwnd"></iframe>
       '
 
-      assignment = Coursewareable::Assignment.create(
+      assignment = Fabricate('coursewareable/assignment',
         :title => bad_input,
         :content => bad_long_input
       )

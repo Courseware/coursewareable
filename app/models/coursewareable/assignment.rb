@@ -30,7 +30,10 @@ module Coursewareable
     friendly_id :title, :use => :scoped, :scope => :classroom
 
     # Track activities
-    tracked :owner => :user, :recipient => :classroom
+    tracked(:owner => :user, :recipient => :classroom, :params => {
+      :user_name => proc {|c, m| m.user.name},
+      :classroom_title => proc {|c, m| m.classroom.title}
+    }, :only => [:create])
 
     # Callbacks
     # Cleanup title and description before saving it
