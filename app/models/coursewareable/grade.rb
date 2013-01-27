@@ -23,8 +23,11 @@ module Coursewareable
     validates_uniqueness_of :receiver_id, :scope => :assignment_id
 
     # Track activities
-    tracked :owner => :user, :recipient => :classroom, :only => [
-      :create, :update]
+    tracked(:owner => :user, :recipient => :classroom, :params => {
+      :user_name => proc {|c, m| m.user.name},
+      :receiver_name => proc {|c, m| m.receiver.name},
+      :classroom_title => proc {|c, m| m.classroom.title}
+    }, :only => [:create, :update])
 
     # Callbacks
     # Cleanup title and description before saving it

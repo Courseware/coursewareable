@@ -25,6 +25,19 @@ describe Coursewareable::Grade do
       subject.user.activities_as_owner.collect(&:key).should include(
         'coursewareable_grade.create')
     end
+
+    context 'generated activity parameters' do
+      let(:activity) do
+        subject.classroom.all_activities.where(
+          :key => 'coursewareable_grade.create').first
+      end
+
+      it 'parameters should not be empty' do
+        activity.parameters[:user_name].should eq(subject.user.name)
+        activity.parameters[:receiver_name].should eq(subject.receiver.name)
+        activity.parameters[:classroom_title].should eq(subject.classroom.title)
+      end
+    end
   end
 
   describe 'receiver is the owner of the classroom' do
