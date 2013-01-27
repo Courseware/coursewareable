@@ -13,7 +13,6 @@ describe Coursewareable::Membership do
       owner.activities_as_owner.collect(&:key).should(
         include('coursewareable_membership.create')
       )
-      owner.activities_as_owner.last.parameters[:user_name].should eq(user_name)
     end
 
     it 'should generate a new activity on deletion' do
@@ -21,7 +20,20 @@ describe Coursewareable::Membership do
       owner.activities_as_owner.collect(&:key).should(
         include('coursewareable_membership.destroy')
       )
-      owner.activities_as_owner.last.parameters[:user_name].should eq(user_name)
+    end
+
+    context 'generated activity parameters' do
+      let(:activity) do
+        membership.classroom.all_activities.where(
+          :key => 'coursewareable_membership.create').first
+      end
+
+      it 'parameters should not be empty' do
+        activity.parameters[:user_name].should eq(membership.creator.name)
+        activity.parameters[:member_name].should eq(membership.user.name)
+        activity.parameters[:classroom_title].should eq(
+          membership.classroom.title)
+      end
     end
   end
 end
