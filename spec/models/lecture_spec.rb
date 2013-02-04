@@ -13,6 +13,8 @@ describe Coursewareable::Lecture do
   it { should have_many(:images) }
   it { should have_many(:uploads) }
   it { should have_many(:assignments).dependent(:destroy) }
+  it { should have_many(:responses).through(:assignments) }
+  it { should have_many(:grades).through(:assignments) }
 
   describe 'with all attributes' do
     subject{ Fabricate('coursewareable/lecture') }
