@@ -63,10 +63,32 @@ describe Coursewareable::User do
     end
   end
 
-  describe 'with no first/last name' do
-    subject{
-      Fabricate('coursewareable/user', :first_name => nil, :last_name => nil) }
-    its(:name) { should match(/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/) }
+  describe '#name' do
+    let(:user) do
+      Fabricate.build('coursewareable/user',
+                      :first_name => nil, :last_name => nil)
+    end
+
+    subject { user }
+
+    context 'when first and last name is missing' do
+      its(:name) { should match(/^[\w\-\.]+\.{3}@([\w\-]+\.)+[\w\-]{2,4}$/) }
+    end
+
+    context 'when first name is missing' do
+      before { user.last_name = Faker::Name.last_name }
+      its(:name) { should eq(user.last_name) }
+    end
+
+    context 'when last name is missing' do
+      before { user.first_name = Faker::Name.first_name }
+      its(:name) { should eq(user.first_name) }
+    end
+
+    context 'and a short email' do
+      before { user.email = 's@nerd.ro' }
+      its(:name) { should match(/^[\w\-\.]+\.{3}@([\w\-]+\.)+[\w\-]{2,4}$/) }
+    end
   end
 
   describe '#classrooms' do

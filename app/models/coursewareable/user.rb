@@ -61,8 +61,10 @@ module Coursewareable
 
     # Helper to generate user's name
     def name
-      return [first_name, last_name].join(' ') if first_name and last_name
-      email
+      return [first_name, last_name].join(' ').strip if first_name or last_name
+      # Get just first 3 chars and truncate the rest
+      email_name = email.split('@').first
+      email.sub(email_name, email_name.truncate(3, :omission => '') + '...')
     end
 
     # Helper to fetch all classrooms related to user
