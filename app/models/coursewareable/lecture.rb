@@ -23,10 +23,9 @@ module Coursewareable
 
     # Validations
     validates_presence_of :title, :slug, :content
-    validates_uniqueness_of :title, :scope => :classroom_id
 
     # Generate title slug
-    friendly_id :title, :use => :scoped, :scope => :classroom
+    friendly_id :title, :use => :scoped, :scope => :classroom_id
 
     # Track activities
     tracked(:owner => :user, :recipient => :classroom, :params => {

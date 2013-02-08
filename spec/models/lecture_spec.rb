@@ -19,7 +19,6 @@ describe Coursewareable::Lecture do
   describe 'with all attributes' do
     subject{ Fabricate('coursewareable/lecture') }
 
-    it { should validate_uniqueness_of(:title).scoped_to(:classroom_id) }
     it { should respond_to(:slug) }
 
     its(:parent_lecture){ should be_nil }
