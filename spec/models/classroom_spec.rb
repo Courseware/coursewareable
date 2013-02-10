@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'spec_helper'
 
 describe Coursewareable::Classroom do
@@ -17,6 +19,18 @@ describe Coursewareable::Classroom do
 
   Coursewareable.config.domain_blacklist.each do |domain|
     it { should_not allow_value(domain).for(:slug) }
+  end
+
+  describe 'with weird chars' do
+    context 'russian chars' do
+      subject{ Fabricate('coursewareable/classroom', :title => 'Первый') }
+      its(:slug) { should match(/\d+/) }
+    end
+
+    context 'asian chars' do
+      subject{ Fabricate('coursewareable/classroom', :title => '科学の社会史')}
+      its(:slug) { should match(/\d+/) }
+    end
   end
 
   describe 'with all attributes' do

@@ -45,8 +45,11 @@ module Coursewareable
     # Cleanup title and description before saving it
     before_validation do
       self.title = Sanitize.clean(self.title)
+      # Cleanup and parameterize slug
       self.slug = self.title if self.slug.blank?
       self.slug = self.slug.parameterize
+      self.slug = (self.title.length + Time.now.to_i).to_s if self.slug.blank?
+
       self.description = Sanitize.clean(
         self.description, Sanitize::Config::RESTRICTED)
     end
