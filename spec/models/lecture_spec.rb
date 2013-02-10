@@ -31,6 +31,14 @@ describe Coursewareable::Lecture do
       )
     end
 
+    context 'slugs should be unique and not raise exceptions' do
+      let(:new_lecture) do
+        Fabricate('coursewareable/lecture', :title => subject.title)
+      end
+
+      it { new_lecture.slug.should match(/#{subject.slug}--\d+?/) }
+    end
+
     context 'generated activity parameters' do
       let(:activity) do
         subject.classroom.all_activities.where(
