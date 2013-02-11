@@ -17,7 +17,7 @@ describe Coursewareable::Lecture do
   it { should have_many(:grades).through(:assignments) }
 
   describe 'with all attributes' do
-    subject{ Fabricate('coursewareable/lecture') }
+    subject{ Fabricate('coursewareable/lecture', :position => false) }
 
     it { should respond_to(:slug) }
 
