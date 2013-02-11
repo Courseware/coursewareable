@@ -15,7 +15,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'cancan'
   s.add_dependency 'sorcery'
-  s.add_dependency 'public_activity'
+  # Pinned, remove when gem is fixed
+  s.add_dependency 'public_activity', '0.5.4'
   s.add_dependency 'friendly_id'
   s.add_dependency 'paperclip'
   s.add_dependency 'sanitize'
