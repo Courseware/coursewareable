@@ -19,7 +19,7 @@ module Coursewareable
     has_many :responses, :through => :assignments
     has_many :grades, :through => :assignments
     has_many(:child_lectures, :class_name => Lecture,
-             :foreign_key => :parent_lecture_id)
+             :foreign_key => :parent_lecture_id, :order => 'position DESC')
 
     # Validations
     validates_presence_of :title, :slug, :content
