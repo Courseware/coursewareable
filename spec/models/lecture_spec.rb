@@ -22,6 +22,7 @@ describe Coursewareable::Lecture do
     it { should respond_to(:slug) }
 
     its(:parent_lecture){ should be_nil }
+    its(:position){ should eq(0) }
 
     it 'should generate a new activity' do
       subject.user.activities_as_owner.collect(&:key).should include(
