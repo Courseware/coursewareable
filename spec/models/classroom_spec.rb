@@ -59,6 +59,17 @@ describe Coursewareable::Classroom do
       subject.members.should include(subject.owner)
     end
 
+    context 'lectures should be ordered by position DESC' do
+      before do
+        Fabricate('coursewareable/lecture',:classroom => subject)
+        Fabricate('coursewareable/lecture',:classroom => subject,:position => 5)
+      end
+
+      it do
+        subject.lectures.map(&:position).should eq([5, 0])
+      end
+    end
+
     context 'generated activity parameters' do
       let(:activity) do
         subject.all_activities.first

@@ -23,7 +23,7 @@ module Coursewareable
     has_many :assets
     has_many :images
     has_many :uploads
-    has_many :lectures
+    has_many :lectures, :order => 'position DESC'
     has_many :assignments
     has_many :responses
     has_many :grades
