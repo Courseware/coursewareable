@@ -61,7 +61,7 @@ describe Coursewareable::Classroom do
 
     context 'lectures should be ordered by position DESC' do
       before do
-        Fabricate('coursewareable/lecture',:classroom => subject)
+        Fabricate('coursewareable/lecture',:classroom => subject,:position => 0)
         Fabricate('coursewareable/lecture',:classroom => subject,:position => 5)
       end
 
