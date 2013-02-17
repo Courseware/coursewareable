@@ -9,6 +9,10 @@ describe Coursewareable::Collaboration do
     let!(:owner) { collaboration.classroom.owner }
     let!(:user_name) { collaboration.user.name }
 
+    it { should respond_to(:announce) }
+    it { should respond_to(:collaboration) }
+    it { should respond_to(:generic) }
+
     it 'should generate a new activity' do
       owner.activities_as_owner.collect(&:key).should(
         include('coursewareable_collaboration.create')

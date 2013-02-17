@@ -9,6 +9,11 @@ describe Coursewareable::Membership do
     let!(:owner) { membership.classroom.owner }
     let!(:user_name) { membership.user.name }
 
+    it { should respond_to(:announce) }
+    it { should respond_to(:membership) }
+    it { should respond_to(:generic) }
+    it { should respond_to(:grade) }
+
     it 'should generate a new activity' do
       owner.activities_as_owner.collect(&:key).should(
         include('coursewareable_membership.create')
