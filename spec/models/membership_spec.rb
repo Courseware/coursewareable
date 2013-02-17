@@ -35,5 +35,9 @@ describe Coursewareable::Membership do
           membership.classroom.title)
       end
     end
+
+    it 'should have email announcement field' do
+      membership.email_announcement.should_not be_nil
+    end
   end
 end
