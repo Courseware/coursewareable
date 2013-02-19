@@ -6,10 +6,6 @@ module Coursewareable
     belongs_to :user, :counter_cache => true
     belongs_to :classroom, :counter_cache => true
 
-    # Dynamic settings store
-    store :email_announcement, :accessors => [
-      :announce, :membership, :generic, :grade]
-
     # Sugaring to avoid procs when tracking activities
     has_one :creator, :through => :classroom, :source => :owner
 

@@ -1,7 +1,7 @@
 Fabricator('coursewareable/collaboration') do
   user(:fabricator => 'coursewareable/user')
   classroom(:fabricator => 'coursewareable/classroom')
-  announce      true
-  collaboration true
-  generic       true
+  send_grades        true
+  send_announcements true
+  send_generic       false
 end
