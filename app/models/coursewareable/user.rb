@@ -34,10 +34,15 @@ module Coursewareable
       :received_grades, :dependent => :destroy,
       :foreign_key => :receiver_id, :class_name => Grade
     )
+    has_many :invitations
+    has_many(
+      :sent_invitations, :dependent => :destroy,
+      :class_name => Invitation, :foreign_key => :creator_id
+    )
 
     # Validations
     validates_confirmation_of :password
-    validates_presence_of :password, { on: :create }
+    validates_presence_of :password, { :on => :create }
     validates_length_of :password, :minimum => 6, :maximum => 32
 
     validates_presence_of :email
