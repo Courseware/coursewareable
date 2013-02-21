@@ -34,10 +34,15 @@ module Coursewareable
       :received_grades, :dependent => :destroy,
       :foreign_key => :receiver_id, :class_name => Grade
     )
+    has_many :invitations, :dependent => :destroy
+    has_many(
+      :sent_invitations, :dependent => :destroy,
+      :class_name => Invitation, :foreign_key => :creator_id
+    )
 
     # Validations
     validates_confirmation_of :password
-    validates_presence_of :password, { on: :create }
+    validates_presence_of :password, { :on => :create }
     validates_length_of :password, :minimum => 6, :maximum => 32
 
     validates_presence_of :email
@@ -57,6 +62,20 @@ module Coursewareable
     before_save do
       self.description = Sanitize.clean(
         self.description, Sanitize::Config::RESTRICTED)
+    end
+    # Update invitations, if any, related to user email address
+    after_create do
+      invites = Invitation.where(:email => self.email)
+      return if invites.empty?
+
+      invites.each do |inv|
+        inv.update_attributes(:user_id => self.id)
+
+        role = inv.role.constantize unless inv.role.nil?
+        inv.classroom.members << self if role == Coursewareable::Membership
+        inv.classroom.collaborators << self if (
+          role == Coursewareable::Collaboration)
+      end
     end
 
     # Helper to generate user's name

@@ -24,6 +24,8 @@ describe Coursewareable::User do
   it { should have_many(:responses).dependent(:destroy) }
   it { should have_many(:grades) }
   it { should have_many(:received_grades).dependent(:destroy) }
+  it { should have_many(:sent_invitations).dependent(:destroy) }
+  it { should have_many(:invitations).dependent(:destroy) }
 
   it { should respond_to(:created_classrooms_count) }
   it { should respond_to(:memberships_count) }
