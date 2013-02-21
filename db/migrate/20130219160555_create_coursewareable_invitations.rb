@@ -1,9 +1,9 @@
 class CreateCoursewareableInvitations < ActiveRecord::Migration
   def change
     create_table :coursewareable_invitations do |t|
-      t.reference :classroom
-      t.reference :creator
-      t.reference :user
+      t.references :classroom
+      t.references :creator
+      t.references :user
       t.string :email
       t.string :role
 

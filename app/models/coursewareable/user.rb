@@ -34,7 +34,7 @@ module Coursewareable
       :received_grades, :dependent => :destroy,
       :foreign_key => :receiver_id, :class_name => Grade
     )
-    has_many :invitations
+    has_many :invitations, :dependent => :destroy
     has_many(
       :sent_invitations, :dependent => :destroy,
       :class_name => Invitation, :foreign_key => :creator_id
