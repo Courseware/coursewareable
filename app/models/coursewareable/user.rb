@@ -63,6 +63,20 @@ module Coursewareable
       self.description = Sanitize.clean(
         self.description, Sanitize::Config::RESTRICTED)
     end
+    # Update invitations, if any, related to user email address
+    after_create do
+      invites = Invitation.where(:email => self.email)
+      return if invites.empty?
+
+      invites.each do |inv|
+        inv.update_attributes(:user_id => self.id)
+
+        role = inv.role.constantize unless inv.role.nil?
+        inv.classroom.members << self if role == Coursewareable::Membership
+        inv.classroom.collaborators << self if (
+          role == Coursewareable::Collaboration)
+      end
+    end
 
     # Helper to generate user's name
     def name

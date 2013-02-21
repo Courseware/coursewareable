@@ -46,4 +46,41 @@ describe Coursewareable::Invitation do
       end
     end
   end
+
+  context 'is redeemable by an user' do
+    let(:invitation) do
+      Fabricate('coursewareable/invitation')
+    end
+
+    it 'updates attributes' do
+      user = Fabricate(:confirmed_user, :email => invitation.email)
+      user.invitations.should include(invitation)
+    end
+  end
+
+  context 'is redeemable by a member' do
+    let(:invitation) do
+      Fabricate(:membership_invitation)
+    end
+
+    it 'updates attributes' do
+      user = Fabricate(:confirmed_user, :email => invitation.email)
+      user.invitations.should include(invitation)
+      invitation.reload.user.reload.should eq(user)
+      invitation.classroom.members.should include(user)
+    end
+  end
+
+  context 'is redeemable by a collaborator' do
+    let(:invitation) do
+      Fabricate(:collaborator_invitation)
+    end
+
+    it 'updates attributes' do
+      user = Fabricate(:confirmed_user, :email => invitation.email)
+      user.invitations.should include(invitation)
+      invitation.reload.user.should eq(user)
+      invitation.classroom.collaborators.should include(user)
+    end
+  end
 end
