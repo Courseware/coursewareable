@@ -87,7 +87,7 @@ describe Coursewareable::Response do
 
       its(:coverage) { should eq(3 * 100.0 / 4) }
       its(:stats) { should eq({:all => 4, :wrong => 1}) }
-      its(:answers) { subject[0]['options'][0]['wrong'].should be_true }
+      it { resp.answers[0]['options'][0]['wrong'].should be_true }
     end
 
     context 'checkbox answers mixed wrong' do
@@ -103,8 +103,8 @@ describe Coursewareable::Response do
 
       its(:coverage) { should eq(2 * 100.0 / 4) }
       its(:stats) { should eq({:all => 4, :wrong => 2}) }
-      its(:answers) { subject[1]['options'][0]['wrong'].should be_true }
-      its(:answers) { subject[1]['options'][1]['wrong'].should be_true }
+      it { resp.answers[1]['options'][0]['wrong'].should be_true }
+      it { resp.answers[1]['options'][1]['wrong'].should be_true }
     end
 
     context 'radio answers mixed wrong' do
@@ -117,7 +117,7 @@ describe Coursewareable::Response do
 
       its(:coverage) { should eq(3 * 100.0 / 4) }
       its(:stats) { should eq({:all => 4, :wrong => 1}) }
-      its(:answers) { subject[2]['options'][0]['wrong'].should be_true }
+      it { resp.answers[2]['options'][0]['wrong'].should be_true }
     end
 
     context 'answers are missing' do
@@ -129,10 +129,10 @@ describe Coursewareable::Response do
 
       its(:coverage) { should eq(0 * 100.0 / 4) }
       its(:stats) { should eq({:all => 4, :wrong => 4}) }
-      its(:answers) { subject[0]['options'][0]['wrong'].should be_true }
-      its(:answers) { subject[1]['options'][0]['wrong'].should be_true }
-      its(:answers) { subject[1]['options'][2]['wrong'].should be_true }
-      its(:answers) { subject[2]['options'][0]['wrong'].should be_true }
+      it { resp.answers[0]['options'][0]['wrong'].should be_true }
+      it { resp.answers[1]['options'][0]['wrong'].should be_true }
+      it { resp.answers[1]['options'][2]['wrong'].should be_true }
+      it { resp.answers[2]['options'][0]['wrong'].should be_true }
     end
 
   end
