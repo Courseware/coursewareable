@@ -7,7 +7,7 @@ module Coursewareable
       # nil for non classroom related invitation, the other two for else
       nil, Coursewareable::Membership.name, Coursewareable::Collaboration.name]
 
-    attr_accessible :email, :role, :user_id
+    attr_accessible :email, :role, :user_id, :classroom
 
     # Relationships
     belongs_to :classroom
