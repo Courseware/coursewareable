@@ -57,7 +57,8 @@ describe Coursewareable::Plan do
       it do
         expect{
           plan.update_attributes({
-            :allowed_space => 50.gigabytes
+            :allowed_space => 100.gigabytes,
+            :used_space => 50.gigabytes
           }).to_not raise_error
         }
       end
