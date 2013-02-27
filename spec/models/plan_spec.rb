@@ -53,6 +53,16 @@ describe Coursewareable::Plan do
       end
     end
 
+    context 'allowed_space plan limit should not brake PostgreSQL' do
+      it do
+        expect{
+          plan.update_attributes({
+            :allowed_space => 50.gigabytes
+          }).to_not raise_error
+        }
+      end
+    end
+
   end
 
 end
