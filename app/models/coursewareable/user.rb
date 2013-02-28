@@ -50,6 +50,9 @@ module Coursewareable
     validates_format_of :email, :with => EMAIL_FORMAT, :on => :create
     validates_length_of :description, :maximum => 1000
 
+    # Nested attributes
+    accepts_nested_attributes_for :memberships, :update_only => true
+
     # Enable public activity
     activist
 
