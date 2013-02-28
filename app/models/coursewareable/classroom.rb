@@ -16,6 +16,7 @@ module Coursewareable
       :owner, :counter_cache => :created_classrooms_count, :class_name => User
     )
 
+    has_many :associations
     has_many :memberships, :dependent => :destroy
     has_many :members, :through => :memberships, :source => :user
     has_many :collaborations, :dependent => :destroy
