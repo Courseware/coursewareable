@@ -18,6 +18,7 @@ module Coursewareable
     )
     has_one :plan
 
+    has_many :associations
     has_many :memberships, :dependent => :destroy
     has_many :collaborations, :dependent => :destroy
     has_many(:membership_classrooms,
@@ -51,7 +52,7 @@ module Coursewareable
     validates_length_of :description, :maximum => 1000
 
     # Nested attributes
-    accepts_nested_attributes_for :memberships, :update_only => true
+    accepts_nested_attributes_for :associations, :update_only => true
 
     # Enable public activity
     activist

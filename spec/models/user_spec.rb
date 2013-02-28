@@ -12,6 +12,7 @@ describe Coursewareable::User do
   it { should ensure_length_of(:description).is_at_most(1000) }
 
   it { should have_one(:plan) }
+  it { should have_many(:associations) }
   it { should have_many(:memberships).dependent(:destroy) }
   it { should have_many(:collaborations).dependent(:destroy) }
   it { should have_many(:created_classrooms).dependent(:destroy) }
