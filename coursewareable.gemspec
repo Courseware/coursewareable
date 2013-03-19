@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.test_files  = `git ls-files -- spec/*`.split("\n")
 
   s.add_dependency 'cancan'
-  s.add_dependency 'sorcery'
+  s.add_dependency 'sorcery', '~> 0.8'
   s.add_dependency 'public_activity'
   s.add_dependency 'friendly_id'
   s.add_dependency 'paperclip'
