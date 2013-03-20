@@ -6,12 +6,16 @@ module Coursewareable
     # [User] email validation regex
     EMAIL_FORMAT = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
 
-    authenticates_with_sorcery!
+    authenticates_with_sorcery! do |config|
+      config.authentications_class = ::Coursewareable::Authentication
+    end
 
     attr_accessible :email, :password, :password_confirmation,
-      :first_name, :last_name, :description
+      :first_name, :last_name, :description, :authentications_attributes
 
     # Relationships
+    has_many :authentications, :dependent => :destroy
+
     has_many(
       :created_classrooms, :dependent => :destroy,
       :class_name => Classroom, :foreign_key => :owner_id
@@ -52,6 +56,7 @@ module Coursewareable
     validates_length_of :description, :maximum => 1000
 
     # Nested attributes
+    accepts_nested_attributes_for :authentications
     accepts_nested_attributes_for :associations, :update_only => true
 
     # Enable public activity
