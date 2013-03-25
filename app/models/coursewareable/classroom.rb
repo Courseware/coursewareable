@@ -6,7 +6,7 @@ module Coursewareable
   class Classroom < ActiveRecord::Base
     include PublicActivity::Model
 
-    attr_accessible :description, :title, :slug
+    attr_accessible :description, :title, :slug, :lectures_attributes
 
     # Dynamic settings store
     store :settings, :accessors => [:color_scheme, :header_image, :color]
@@ -15,6 +15,7 @@ module Coursewareable
     belongs_to(
       :owner, :counter_cache => :created_classrooms_count, :class_name => User
     )
+
 
     has_many :associations
     has_many :memberships, :dependent => :destroy
@@ -42,6 +43,10 @@ module Coursewareable
       :user_name => proc {|c, m| m.owner.name},
       :classroom_title => proc {|c, m| m.title}
     })
+
+    #Nested attributes for lectures.
+    accepts_nested_attributes_for :lectures, :update_only => true
+
 
     # Callbacks
     # Cleanup title and description before saving it
