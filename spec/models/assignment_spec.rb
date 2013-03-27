@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Coursewareable::Assignment, :focus => true do
+describe Coursewareable::Assignment do
   it { should validate_presence_of(:title) }
   it { should validate_presence_of(:slug) }
   it { should validate_presence_of(:content) }

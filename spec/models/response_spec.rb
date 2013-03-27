@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Coursewareable::Response, :focus => true do
+describe Coursewareable::Response do
   it { should validate_presence_of(:content) }
   it { should validate_presence_of(:assignment) }
 
