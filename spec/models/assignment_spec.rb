@@ -73,11 +73,33 @@ describe Coursewareable::Assignment do
 
   describe 'quiz' do
     let(:quiz_data) {
-      [{ :content => Faker::Lorem.sentence, :type => :radios, :options => [
-        { :content => Faker::Lorem.word, :valid => true },
-        { :content => Faker::Lorem.word, :valid => false }]
-      }]
+      [{ 'content' => Faker::Lorem.sentence, 'type' => 'radios', 'options' => [
+        { 'content' => Faker::Lorem.word, 'valid' => true },
+        { 'content' => Faker::Lorem.word, 'valid' => false }]
+      }.with_indifferent_access]
     }
+
+    it 'sanitizes quiz html' do
+      quiz_data[0]['content'] = quiz_data[0]['options'][0]['content'] = '
+      <h1>Heading</h1>
+      <ol><li>Name</li></ol>
+      <em>Content</em>
+      <script>alert("PWND")</script>
+      <iframe src="http://pwnr.com/pwnd"></iframe>
+      '
+      asgm = Fabricate('coursewareable/assignment', :quiz => quiz_data)
+      cleaned_content = Sanitize.clean(quiz_data[0]['content'],
+        Coursewareable::Assignment::QUIZ_SANITIZE_CONFIG)
+      cleaned_option = Sanitize.clean(
+        quiz_data[0]['content'], Sanitize::Config::RESTRICTED)
+
+      asgm.reload
+      asgm.quiz.first['content'].should_not match(/\<(script|iframe|h1|ol)\>/)
+      asgm.quiz.first['content'].should eq(cleaned_content)
+      asgm.quiz.first['options'].first['content'].should_not match(
+        /\<(script|iframe|h1|ol)\>/)
+      asgm.quiz.first['options'].first['content'].should eq(cleaned_option)
+    end
 
     it 'should properly handle quiz attributes' do
       assignment = Fabricate('coursewareable/assignment', :quiz => quiz_data)
@@ -101,9 +123,7 @@ describe Coursewareable::Assignment do
     end
 
     it 'handles invalid data properly' do
-      assignment = Fabricate('coursewareable/assignment',
-                             :quiz => 'test')
-
+      assignment = Fabricate('coursewareable/assignment', :quiz => 'test')
       assignment.reload
       assignment.quiz.should be_nil
     end

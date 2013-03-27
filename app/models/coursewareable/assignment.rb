@@ -7,6 +7,16 @@ module Coursewareable
     extend FriendlyId
     include PublicActivity::Model
 
+    # Sanitize question content config
+    QUIZ_SANITIZE_CONFIG = {
+      :elements => Sanitize::Config::RESTRICTED[:elements] + ['a', 'img'],
+      :attributes => { 'a' => ['href'], 'img' => ['src', 'alt'] },
+      :protocols=> {
+        'a' => Sanitize::Config::RELAXED[:protocols].fetch('a'),
+        'img' => Sanitize::Config::RELAXED[:protocols].fetch('img')
+      }
+    }
+
     attr_accessible :content, :title, :quiz
 
     # Serialize quiz values as a hash
@@ -48,6 +58,19 @@ module Coursewareable
           self.quiz = nil
         end
       end
+
+      self.quiz = self.quiz.each_with_index do |question, position|
+        # Cleanup question content
+        question['content'] = Sanitize.clean(
+          question['content'], QUIZ_SANITIZE_CONFIG)
+
+        # Cleanup question options
+        question['options'].each_with_index do |option, index|
+          option['content'] = Sanitize.clean(
+            option['content'], Sanitize::Config::RESTRICTED)
+        end unless question.empty?
+      end unless self.quiz.nil?
+
     end
   end
 end

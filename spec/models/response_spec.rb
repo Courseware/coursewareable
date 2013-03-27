@@ -63,7 +63,7 @@ describe Coursewareable::Response do
                           '2' => {'answer' => true } } },
           # Radios answer OK 1/1
           '2' => {'options' => {'answer' => 0 } }
-        }
+        }.with_indifferent_access
       )
     end
 
@@ -74,6 +74,28 @@ describe Coursewareable::Response do
 
       its(:coverage) { should eq(100) }
       its(:stats) { should eq({:all => 4, :wrong => 0}) }
+    end
+
+    context 'text answer sanitization' do
+      let(:bad_input) {
+        '<h1>Heading</h1>
+        <ol><li>Name</li></ol>
+        <em>Content</em>
+        <script>alert("PWND")</script>
+        <iframe src="http://pwnr.com/pwnd"></iframe>'
+      }
+
+      before do
+        resp.answers['0'] = {'options' => { '0' =>
+          { 'answer' => bad_input } } }
+        resp.save
+      end
+
+      it 'cleans answers' do
+        resp.answers[0]['options'][0]['answer'].should eq(
+          Sanitize.clean(bad_input, Sanitize::Config::RESTRICTED)
+        )
+      end
     end
 
     context 'text answer wrong' do

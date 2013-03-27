@@ -58,6 +58,7 @@ module Coursewareable
 
           if question['type'] == 'text' and !val.match(/#{option['content']}/i)
             option['wrong'] = true
+            option['answer'] = Sanitize.clean(val, Sanitize::Config::RESTRICTED)
             stats[:wrong] +=1
           elsif question['type'] == 'checkboxes' and
             (option['valid'] == true and !val) or (!option['valid'] and val)
