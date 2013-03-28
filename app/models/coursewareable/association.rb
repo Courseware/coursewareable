@@ -7,6 +7,12 @@ module Coursewareable
 
     attr_accessible :send_announcements, :send_generic, :send_grades
 
+    # Relationships
+    belongs_to :classroom
+
+    # Sugaring to avoid procs when tracking activities
+    has_one :creator, :through => :classroom, :source => :owner
+
     # Callbacks
     before_create do
       self.send_announcements = true if send_announcements.nil?

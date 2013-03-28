@@ -25,6 +25,7 @@ module Coursewareable
     has_many :associations
     has_many :memberships, :dependent => :destroy
     has_many :collaborations, :dependent => :destroy
+    has_many :classrooms, :through => :associations, :source => :classroom
     has_many(:membership_classrooms,
              :through => :memberships, :source => :classroom)
     has_many(:collaboration_classrooms,
@@ -93,11 +94,6 @@ module Coursewareable
       # Get just first 3 chars and truncate the rest
       email_name = email.split('@').first
       email.sub(email_name, email_name.truncate(3, :omission => '') + '...')
-    end
-
-    # Helper to fetch all classrooms related to user
-    def classrooms
-      return membership_classrooms + collaboration_classrooms
     end
 
     # Sugaring to count created collaborations across created classrooms

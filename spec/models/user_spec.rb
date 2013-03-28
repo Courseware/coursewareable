@@ -14,6 +14,7 @@ describe Coursewareable::User do
   it { should have_many(:authentications).dependent(:destroy) }
   it { should have_one(:plan) }
   it { should have_many(:associations) }
+  it { should have_many(:classrooms) }
   it { should have_many(:memberships).dependent(:destroy) }
   it { should have_many(:collaborations).dependent(:destroy) }
   it { should have_many(:created_classrooms).dependent(:destroy) }
@@ -95,7 +96,7 @@ describe Coursewareable::User do
     end
   end
 
-  describe '#classrooms' do
+  describe 'classrooms relationship' do
     subject { Fabricate('coursewareable/user') }
     let(:classroom_for_member) { Fabricate('coursewareable/classroom') }
     let(:classroom_for_collab) { Fabricate('coursewareable/classroom') }

@@ -44,6 +44,7 @@ describe Coursewareable::Classroom do
     it { should validate_uniqueness_of(:slug) }
 
     it { should respond_to(:memberships_count) }
+    it { should respond_to(:collaborations_count) }
     it { should respond_to(:header_image) }
     it { should respond_to(:color) }
     it { should respond_to(:color_scheme) }
