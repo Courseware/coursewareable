@@ -2,6 +2,7 @@ require 'rails/generators'
 require 'rails/generators/rails/plugin_new/plugin_new_generator'
 
 module Coursewareable
+  # Create a new plugin of Coursewareable
   class DummyGenerator < Rails::Generators::PluginNewGenerator
 
     def self.default_source_root

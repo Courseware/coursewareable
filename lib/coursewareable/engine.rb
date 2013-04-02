@@ -1,6 +1,7 @@
 require 'sorcery'
 
 module ::Coursewareable
+  # Engine of Coursewareable
   class Engine < ::Rails::Engine
     isolate_namespace Coursewareable
 

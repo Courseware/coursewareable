@@ -19,7 +19,8 @@ describe Coursewareable::User do
       it{ should be_able_to(:create, Coursewareable::Syllabus) }
       it{ should be_able_to(:create, Coursewareable::Assignment) }
       it{ should be_able_to(:manage, Fabricate('coursewareable/membership')) }
-      it{ should be_able_to(:manage, Fabricate('coursewareable/collaboration')) }
+      it{ should
+        be_able_to(:manage, Fabricate('coursewareable/collaboration')) }
       it{ should be_able_to(:manage, Fabricate('coursewareable/classroom')) }
       it{ should be_able_to(:manage, Fabricate('coursewareable/user')) }
       it{ should be_able_to(:manage, Fabricate('coursewareable/image')) }

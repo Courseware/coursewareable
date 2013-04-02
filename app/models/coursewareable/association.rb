@@ -1,5 +1,6 @@
 # Many-to-many relationship between users and classrooms
 module Coursewareable
+  # Coursewareable [Classroom] associations
   class Association < ActiveRecord::Base
     # Dynamic settings store
     store :email_announcement, :accessors => [
