@@ -1,5 +1,6 @@
 # Many-to-many relationship between users and classrooms
 module Coursewareable
+    # Coursewareable [Classroom] STI model for [Membership] and [Collaboration]
   class Association < ActiveRecord::Base
     # Dynamic settings store
     store :email_announcement, :accessors => [

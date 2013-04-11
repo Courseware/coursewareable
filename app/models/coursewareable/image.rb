@@ -9,6 +9,7 @@ module Coursewareable
     )
 
     # Validations
-    validates_attachment_content_type :attachment, :content_type => ALLOWED_TYPES
+    validates_attachment_content_type :attachment,
+                                      :content_type => ALLOWED_TYPES
   end
 end

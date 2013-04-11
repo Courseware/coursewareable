@@ -13,13 +13,17 @@ describe Coursewareable::User do
       it{ should_not be_able_to(:manage, Fabricate('coursewareable/user')) }
 
       it{ should_not be_able_to(:create, Coursewareable::Classroom) }
-      it{ should_not be_able_to(:manage, Fabricate('coursewareable/classroom')) }
-      it{ should_not be_able_to(:dashboard, Fabricate('coursewareable/classroom')) }
+      it{ should_not be_able_to(:manage,
+        Fabricate('coursewareable/classroom')) }
+      it{ should_not be_able_to(:dashboard,
+        Fabricate('coursewareable/classroom')) }
 
       it{ should_not be_able_to(:create, Coursewareable::Membership) }
       it{ should_not be_able_to(:create, Coursewareable::Collaboration) }
-      it{ should_not be_able_to(:destroy, Fabricate('coursewareable/membership')) }
-      it{ should_not be_able_to(:destroy, Fabricate('coursewareable/collaboration')) }
+      it{ should_not be_able_to(:destroy,
+        Fabricate('coursewareable/membership')) }
+      it{ should_not be_able_to(:destroy,
+        Fabricate('coursewareable/collaboration')) }
 
       it{ should_not be_able_to(:create, Coursewareable::Image) }
       it{ should_not be_able_to(:create, Coursewareable::Upload) }

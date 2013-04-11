@@ -69,7 +69,8 @@ describe Coursewareable::User do
           'coursewareable/assignment', :user => user, :classroom => classroom))
         }
         it{ should be_able_to(:manage, Fabricate(
-          'coursewareable/assignment', :user => user, :classroom => classroom)) }
+          'coursewareable/assignment', :user => user, :classroom => classroom))
+        }
       end
     end
 
