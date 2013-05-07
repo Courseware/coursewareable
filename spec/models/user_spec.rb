@@ -7,7 +7,7 @@ describe Coursewareable::User do
   it { should ensure_length_of(:password).is_at_least(6).is_at_most(32) }
 
   it { should validate_presence_of(:email) }
-  it { should validate_format_of(:email).with('stas+cw@nerd.ro') }
+  it { should allow_value('stas+cw@nerd.ro').for(:email) }
 
   it { should ensure_length_of(:description).is_at_most(1000) }
 

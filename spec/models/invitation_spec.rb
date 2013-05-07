@@ -13,7 +13,7 @@ describe Coursewareable::Invitation do
     subject{ Fabricate('coursewareable/invitation') }
 
     it { should validate_presence_of(:email) }
-    it { should validate_format_of(:email).with('stas+cw@nerd.ro') }
+    it { should allow_value('stas+cw@nerd.ro').for(:email) }
     it { should validate_presence_of(:creator) }
 
     its(:creator) { should be_a(Coursewareable::User) }
