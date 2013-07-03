@@ -23,10 +23,10 @@ namespace :tddium do
     sh "cp #{tddium_config} #{config}"
   end
 
-  desc 'Hook to setup database on tddium'
-  task :db_hook do
-    Rake::Task['db:migrate'].invoke
-  end
+  # desc 'Hook to setup database on tddium'
+  # task :db_hook do
+  #   Rake::Task['db:migrate'].invoke
+  # end
 end
 
 desc 'Run cane to check quality metrics'
