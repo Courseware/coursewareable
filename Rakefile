@@ -25,7 +25,7 @@ namespace :tddium do
 
   desc 'Hook to setup database on tddium'
   task :db_hook do
-    Rake::Task[:migrate].invoke
+    Rake::Task['db:migrate'].invoke
   end
 end
 
