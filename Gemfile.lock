@@ -132,6 +132,8 @@ GEM
       activesupport (= 3.2.13)
       bundler (~> 1.0)
       railties (= 3.2.13)
+    rails-dummy (0.0.1)
+      rails
     railties (3.2.13)
       actionpack (= 3.2.13)
       activesupport (= 3.2.13)
@@ -200,6 +202,7 @@ DEPENDENCIES
   guard-rspec
   pg
   rails
+  rails-dummy
   rb-inotify
   rspec-rails
   shoulda-matchers
