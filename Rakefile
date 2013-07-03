@@ -19,9 +19,8 @@ namespace :tddium do
     tddium_config = File.expand_path('../config/database.yml', __FILE__)
     config = File.expand_path('../spec/dummy/config/database.yml', __FILE__)
 
-    Rake::Task[:setup].invoke
+    Rake::Task['dummy:app'].invoke
     sh "cp #{tddium_config} #{config}"
-    Rake::Task[:install_migrations].invoke
   end
 
   desc 'Hook to setup database on tddium'
