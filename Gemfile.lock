@@ -6,7 +6,6 @@ PATH
       friendly_id
       paperclip
       public_activity
-      rails (~> 3.2)
       sanitize
       sorcery (>= 0.8)
 

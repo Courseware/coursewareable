@@ -8,20 +8,23 @@ Bundler::GemHelper.install_tasks
 ENV['DUMMY_PATH'] = File.expand_path('../spec/dummy', __FILE__)
 ENV['ENGINE'] = 'coursewareable'
 
+task :default => :spec
+
 RSpec::Core::RakeTask.new(:spec => 'dummy:app') do |t|
   t.pattern =  File.expand_path('../spec/**/*_spec.rb', __FILE__)
 end
-task :default => :spec
 
 namespace :tddium do
   desc 'Hook to setup environment on tddium'
-  task :pre_hook do
+  task :pre_hook => 'dummy:setup' do
     tddium_config = File.expand_path('../config/database.yml', __FILE__)
     config = File.expand_path('../spec/dummy/config/database.yml', __FILE__)
-
     sh "cp #{tddium_config} #{config}"
-    Rake::Task['dummy:app'].invoke
   end
+
+  desc 'Hook to setup database on tddium'
+  task :db_hook => ['dummy:install_migrations', 'dummy:migrate']
+
 end
 
 desc 'Run cane to check quality metrics'
@@ -31,6 +34,7 @@ begin
     cane.abc_max = 25
   end
 rescue LoadError
-  task :quality
-  puts 'Cane is not installed, :quality task unavailable'
+  task :quality do
+    puts 'Cane is not installed, :quality task unavailable'
+  end
 end
