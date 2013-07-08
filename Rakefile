@@ -11,6 +11,7 @@ ENV['ENGINE'] = 'coursewareable'
 task :default => :spec
 
 RSpec::Core::RakeTask.new(:spec => 'dummy:app') do |t|
+  t.rspec_opts = "-I #{File.expand_path('../spec/', __FILE__)}"
   t.pattern =  File.expand_path('../spec/**/*_spec.rb', __FILE__)
 end
 
