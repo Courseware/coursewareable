@@ -1,8 +1,9 @@
 = Coursewareable
 
-This is a rails engine carrying most of the Courseware business logic and tests.
+This is the rails engine carrying most of
+the Courseware business logic and tests.
 
-This is proprietary software, please consult 'LICENSE' file before using it.
+= Development
 
 To run tests, use Rake:
 
