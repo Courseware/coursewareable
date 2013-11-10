@@ -3,6 +3,8 @@
 This is the rails engine carrying most of
 the Courseware business logic and tests.
 
+{<img src="https://travis-ci.org/Courseware/coursewareable.png?branch=master" alt="Build Status" />}[https://travis-ci.org/Courseware/coursewareable]
+
 = Development
 
 To run tests, use Rake:
